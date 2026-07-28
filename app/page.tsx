@@ -7,6 +7,9 @@ import { getSlotAvailability } from "@/lib/slots";
 import { EVENT } from "@/lib/constants";
 import { businessChatLink } from "@/lib/whatsapp";
 
+// Keep the slot counter reasonably live without hitting Supabase on every visit.
+export const revalidate = 30;
+
 const HIGHLIGHTS = [
   {
     emoji: "❤️",

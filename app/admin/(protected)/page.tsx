@@ -1,6 +1,9 @@
 import { listBookings } from "@/lib/bookings-server";
 import { AdminTable } from "@/components/admin/AdminTable";
 
+// Admin data must always be fresh — never serve a build-time snapshot.
+export const dynamic = "force-dynamic";
+
 export default async function AdminDashboardPage() {
   const bookings = await listBookings();
 
