@@ -7,6 +7,7 @@ import { formatPkr } from "@/lib/format";
 import { getEarnedBadges } from "@/lib/badges";
 import { BADGES } from "@/lib/constants";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { BookingDetailModal } from "./BookingDetailModal";
 
 type AdminTableProps = {
   initialBookings: Booking[];
@@ -16,6 +17,7 @@ export function AdminTable({ initialBookings }: AdminTableProps) {
   const [bookings, setBookings] = useState(initialBookings);
   const [search, setSearch] = useState("");
   const [pendingRef, setPendingRef] = useState<string | null>(null);
+  const [detailBooking, setDetailBooking] = useState<Booking | null>(null);
 
   const filtered = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -82,7 +84,7 @@ export function AdminTable({ initialBookings }: AdminTableProps) {
       />
 
       <GlassCard className="overflow-x-auto p-0">
-        <table className="w-full text-sm min-w-[920px]">
+        <table className="w-full text-sm min-w-[1020px]">
           <thead>
             <tr className="text-left text-rz-cream/60 border-b border-white/10">
               <th className="px-4 py-3 font-medium">Name</th>
@@ -93,6 +95,7 @@ export function AdminTable({ initialBookings }: AdminTableProps) {
               <th className="px-4 py-3 font-medium">Checked In</th>
               <th className="px-4 py-3 font-medium">Badges</th>
               <th className="px-4 py-3 font-medium">Referrals</th>
+              <th className="px-4 py-3 font-medium">Details</th>
               <th className="px-4 py-3 font-medium">Send</th>
             </tr>
           </thead>
@@ -187,6 +190,14 @@ export function AdminTable({ initialBookings }: AdminTableProps) {
                   })()}
                 </td>
                 <td className="px-4 py-3">
+                  <button
+                    onClick={() => setDetailBooking(b)}
+                    className="chip hover:bg-white/15"
+                  >
+                    👁 View
+                  </button>
+                </td>
+                <td className="px-4 py-3">
                   <a
                     href={adminToCustomerLink(b)}
                     target="_blank"
@@ -200,7 +211,7 @@ export function AdminTable({ initialBookings }: AdminTableProps) {
             ))}
             {filtered.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-4 py-8 text-center text-rz-cream/50">
+                <td colSpan={10} className="px-4 py-8 text-center text-rz-cream/50">
                   No bookings found.
                 </td>
               </tr>
@@ -208,6 +219,13 @@ export function AdminTable({ initialBookings }: AdminTableProps) {
           </tbody>
         </table>
       </GlassCard>
+
+      {detailBooking && (
+        <BookingDetailModal
+          booking={detailBooking}
+          onClose={() => setDetailBooking(null)}
+        />
+      )}
     </div>
   );
 }
