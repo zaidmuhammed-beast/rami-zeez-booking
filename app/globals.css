@@ -1,26 +1,90 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --rz-bg-1: #1c1130;
+  --rz-bg-2: #3a2440;
+  --rz-bg-3: #4a3728;
+  --rz-purple-950: #1e1033;
+  --rz-purple-900: #2a1b3d;
+  --rz-purple-700: #6d28d9;
+  --rz-purple-500: #8b5cf6;
+  --rz-purple-400: #a78bfa;
+  --rz-amber-500: #d9a441;
+  --rz-amber-400: #e8bd6a;
+  --rz-cream: #f3e9dc;
+  --background: var(--rz-purple-950);
+  --foreground: var(--rz-cream);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-rz-bg-1: var(--rz-bg-1);
+  --color-rz-bg-2: var(--rz-bg-2);
+  --color-rz-bg-3: var(--rz-bg-3);
+  --color-rz-purple-950: var(--rz-purple-950);
+  --color-rz-purple-900: var(--rz-purple-900);
+  --color-rz-purple-700: var(--rz-purple-700);
+  --color-rz-purple-500: var(--rz-purple-500);
+  --color-rz-purple-400: var(--rz-purple-400);
+  --color-rz-amber-500: var(--rz-amber-500);
+  --color-rz-amber-400: var(--rz-amber-400);
+  --color-rz-cream: var(--rz-cream);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
-  background: var(--background);
+  background:
+    radial-gradient(circle at 15% 0%, rgba(139, 92, 246, 0.35), transparent 55%),
+    radial-gradient(circle at 85% 15%, rgba(217, 164, 65, 0.25), transparent 50%),
+    radial-gradient(circle at 50% 100%, rgba(74, 55, 40, 0.55), transparent 60%),
+    linear-gradient(160deg, var(--rz-bg-1) 0%, var(--rz-purple-900) 45%, var(--rz-bg-3) 100%);
+  background-attachment: fixed;
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-body), Arial, Helvetica, sans-serif;
+  min-height: 100dvh;
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/10 backdrop-blur-xl border border-white/15 shadow-2xl shadow-purple-950/40;
+  }
+
+  .glass-strong {
+    @apply bg-white/[0.14] backdrop-blur-2xl border border-white/20 shadow-2xl shadow-purple-950/50;
+  }
+
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-xl border border-white/15 shadow-2xl shadow-purple-950/40 rounded-3xl;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 font-semibold text-rz-purple-950 bg-gradient-to-r from-rz-amber-400 to-rz-amber-500 shadow-lg shadow-amber-900/30 transition-transform duration-200 active:scale-95 hover:brightness-105;
+  }
+
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 font-semibold text-rz-cream bg-white/10 backdrop-blur-xl border border-white/25 shadow-2xl shadow-purple-950/40 transition-transform duration-200 active:scale-95 hover:bg-white/15;
+  }
+
+  .input-glass {
+    @apply w-full rounded-2xl bg-white/10 border border-white/20 px-4 py-3 text-rz-cream placeholder-white/40 outline-none transition focus:border-rz-amber-400 focus:bg-white/15;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl shadow-purple-950/40;
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(-2deg); }
+  50% { transform: translateY(-14px) rotate(2deg); }
+}
+
+.animate-float-slow {
+  animation: float-slow 6s ease-in-out infinite;
 }
