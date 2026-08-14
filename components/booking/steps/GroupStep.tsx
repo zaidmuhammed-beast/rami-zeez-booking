@@ -75,9 +75,6 @@ export function GroupStep({ form, onNext }: GroupStepProps) {
             <div className="glass rounded-2xl p-5 text-center">
               <span className="text-3xl">{meme.emoji}</span>
               <p className="mt-2 font-semibold">{meme.title}</p>
-              <p className="mt-1 text-sm text-rz-cream/75 italic">
-                {meme.caption}
-              </p>
             </div>
 
             {groupType === "duo" && (

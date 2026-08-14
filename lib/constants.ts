@@ -17,26 +17,18 @@ export const PRICING = {
 
 export type GroupType = "single" | "duo" | "couple";
 
-export const GROUP_MEME: Record<
-  GroupType,
-  { emoji: string; title: string; caption: string }
-> = {
+export const GROUP_MEME: Record<GroupType, { emoji: string; title: string }> = {
   single: {
     emoji: "👤",
     title: "Solo Harami Soul",
-    caption: "“Third wheel ban'ne ka bhi apna hi swag hota hai.” 😂",
   },
   duo: {
     emoji: "👬",
     title: "Dosti Squad",
-    caption:
-      "“Dosti ho to aisi... jo quiz se pehle hi cheating plan kar le.”",
   },
   couple: {
     emoji: "❤️",
     title: "Couple Goals",
-    caption:
-      "“May your love survive both the Couple Quiz... and each other's answers.”",
   },
 };
 
