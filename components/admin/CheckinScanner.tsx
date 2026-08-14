@@ -7,6 +7,7 @@ import { formatPkr } from "@/lib/format";
 import { getEarnedBadges } from "@/lib/badges";
 import { BADGES } from "@/lib/constants";
 import { wristbandFor } from "@/lib/wristband";
+import { extractBookingRef } from "@/lib/qr";
 
 const READER_ID = "rz-qr-reader";
 
@@ -35,7 +36,7 @@ export function CheckinScanner() {
           (decodedText) => {
             if (!isPausedRef.current) {
               isPausedRef.current = true;
-              lookupRef(decodedText);
+              lookupRef(extractBookingRef(decodedText));
             }
           },
           () => {}
@@ -137,7 +138,7 @@ export function CheckinScanner() {
               onChange={(e) => setManualRef(e.target.value)}
             />
             <button
-              onClick={() => manualRef && lookupRef(manualRef)}
+              onClick={() => manualRef && lookupRef(extractBookingRef(manualRef))}
               disabled={busy || !manualRef}
               className="btn-ghost px-5 disabled:opacity-50"
             >

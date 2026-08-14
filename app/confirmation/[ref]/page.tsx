@@ -24,12 +24,13 @@ export default async function ConfirmationPage({
 
   if (!booking) notFound();
 
-  const qrDataUrl = await generateQrDataUrl(booking.booking_ref);
+  const origin = await getSiteOrigin();
+  const qrDataUrl = await generateQrDataUrl(`${origin}/confirmation/${booking.booking_ref}`);
   const daysLeft = daysUntil(EVENT.date);
   const isConfirmed = booking.status !== "pending_payment";
   const badges = getEarnedBadges(booking);
-  const origin = await getSiteOrigin();
   const referralLink = `${origin}/book?ref=${booking.referral_code}`;
+  const companion = booking.partner_name || booking.buddy_name;
 
   return (
     <div className="mx-auto max-w-2xl px-4 sm:px-6 py-12 md:py-16">
@@ -38,10 +39,14 @@ export default async function ConfirmationPage({
       </div>
 
       <h1 className="font-display text-3xl sm:text-4xl font-extrabold text-center mb-2">
-        🎉 Welcome to the Rami ZeeZ Family!
+        🎉 Thank You, {booking.primary_name}!
       </h1>
-      <p className="text-center text-rz-cream/75 mb-8">
-        Your booking has been received. See you at the Mehfil! 💜
+      <p className="text-center text-rz-cream/75 mb-1">
+        Welcome to the Rami ZeeZ Family
+        {companion ? ` — you and ${companion}` : ""}. See you at the Mehfil! 💜
+      </p>
+      <p className="text-center text-rz-cream/50 text-sm mb-8">
+        Your booking has been received.
       </p>
 
       <GlassCard strong className="p-6 sm:p-8 mb-6">
