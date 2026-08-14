@@ -36,6 +36,15 @@ export function RegistrationStep({ form, onNext }: RegistrationStepProps) {
     if (groupType === "couple") {
       fields.push("partner_name", "partner_phone");
     }
+    if (groupType === "duo") {
+      fields.push(
+        "buddy_name",
+        "buddy_phone",
+        "buddy_whatsapp",
+        "buddy_instagram",
+        "buddy_age"
+      );
+    }
     const valid = await trigger(fields);
     if (valid) onNext();
   }
@@ -48,6 +57,10 @@ export function RegistrationStep({ form, onNext }: RegistrationStepProps) {
       <p className="text-center text-rz-cream/70 mb-6">
         Just the essentials — takes 30 seconds.
       </p>
+
+      {(groupType === "duo" || groupType === "couple") && (
+        <p className="font-semibold mb-3">1. Your Details</p>
+      )}
 
       <div className="space-y-4">
         <div>
@@ -110,7 +123,7 @@ export function RegistrationStep({ form, onNext }: RegistrationStepProps) {
         {groupType === "couple" && (
           <div className="pt-4 mt-2 border-t border-white/10">
             <p className="font-semibold mb-3 flex items-center gap-2">
-              ❤️ Partner Details
+              2. ❤️ Partner Details
             </p>
             <div className="space-y-4">
               <div>
@@ -170,6 +183,80 @@ export function RegistrationStep({ form, onNext }: RegistrationStepProps) {
                       {d}
                     </button>
                   ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {groupType === "duo" && (
+          <div className="pt-4 mt-2 border-t border-white/10">
+            <p className="font-semibold mb-3 flex items-center gap-2">
+              2. 👬 Your Buddy&apos;s Details
+            </p>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm mb-1.5 text-rz-cream/80">
+                  Full Name
+                </label>
+                <input
+                  className="input-glass"
+                  placeholder="Buddy's full name"
+                  {...register("buddy_name")}
+                />
+                <FieldError message={errors.buddy_name?.message} />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm mb-1.5 text-rz-cream/80">
+                    Active Phone Number
+                  </label>
+                  <input
+                    className="input-glass"
+                    placeholder="03xx xxxxxxx"
+                    {...register("buddy_phone")}
+                  />
+                  <FieldError message={errors.buddy_phone?.message} />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1.5 text-rz-cream/80">
+                    WhatsApp Number
+                  </label>
+                  <input
+                    className="input-glass"
+                    placeholder="03xx xxxxxxx"
+                    {...register("buddy_whatsapp")}
+                  />
+                  <FieldError message={errors.buddy_whatsapp?.message} />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm mb-1.5 text-rz-cream/80">
+                    Instagram Username
+                  </label>
+                  <input
+                    className="input-glass"
+                    placeholder="@theirhandle"
+                    {...register("buddy_instagram")}
+                  />
+                  <FieldError message={errors.buddy_instagram?.message} />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1.5 text-rz-cream/80">
+                    Age
+                  </label>
+                  <input
+                    type="number"
+                    className="input-glass"
+                    placeholder="21"
+                    {...register("buddy_age", {
+                      setValueAs: (v) => (v === "" || v == null ? undefined : Number(v)),
+                    })}
+                  />
+                  <FieldError message={errors.buddy_age?.message} />
                 </div>
               </div>
             </div>

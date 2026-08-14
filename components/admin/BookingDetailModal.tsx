@@ -100,6 +100,19 @@ export function BookingDetailModal({ booking, onClose }: BookingDetailModalProps
             </div>
           )}
 
+          {booking.group_type === "duo" && (
+            <div>
+              <p className="font-semibold mb-3">👬 Buddy</p>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <Field label="Full Name" value={booking.buddy_name} />
+                <Field label="Age" value={booking.buddy_age} />
+                <Field label="Phone" value={booking.buddy_phone} />
+                <Field label="WhatsApp" value={booking.buddy_whatsapp} />
+                <Field label="Instagram" value={booking.buddy_instagram} />
+              </div>
+            </div>
+          )}
+
           {Object.keys(booking.fun_answers || {}).length > 0 && (
             <div>
               <p className="font-semibold mb-3">🎲 Fun Answers</p>

@@ -19,6 +19,12 @@ create table if not exists bookings (
   partner_instagram text,
   relationship_duration text,
 
+  buddy_name text,
+  buddy_phone text,
+  buddy_whatsapp text,
+  buddy_instagram text,
+  buddy_age int,
+
   fun_answers jsonb not null default '{}'::jsonb,
 
   ticket_type text not null,

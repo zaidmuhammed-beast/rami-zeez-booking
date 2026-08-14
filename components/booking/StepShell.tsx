@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
 
-const STEP_LABELS = ["Vibe", "You", "Fun Stuff", "Payment"];
+const STEP_LABELS = ["Vibe", "You", "Payment"];
 
 type StepShellProps = {
   step: number;

@@ -99,6 +99,7 @@ export default async function ConfirmationPage({
         <p className="font-semibold mb-3">Bring:</p>
         <ul className="space-y-1.5 text-sm text-rz-cream/80">
           {booking.group_type === "couple" && <li>❤️ Your Partner</li>}
+          {booking.group_type === "duo" && <li>👬 Your Buddy</li>}
           <li>🎉 Good Vibes</li>
           <li>😎 Your Selection</li>
         </ul>

@@ -110,6 +110,7 @@ export function AdminTable({ initialBookings }: AdminTableProps) {
                   <p className="text-xs text-rz-cream/50">
                     {b.booking_ref}
                     {b.partner_name ? ` · ${b.partner_name}` : ""}
+                    {b.buddy_name ? ` · ${b.buddy_name}` : ""}
                   </p>
                 </td>
                 <td className="px-4 py-3">

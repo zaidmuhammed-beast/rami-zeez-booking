@@ -37,6 +37,8 @@ export async function POST(request: Request) {
     funAnswers = {};
   }
 
+  const buddyAgeStr = getStr("buddy_age");
+
   const raw = {
     group_type: getStr("group_type"),
     num_participants: Number(getStr("num_participants")) || 1,
@@ -49,6 +51,11 @@ export async function POST(request: Request) {
     partner_phone: getStr("partner_phone"),
     partner_instagram: getStr("partner_instagram"),
     relationship_duration: getStr("relationship_duration"),
+    buddy_name: getStr("buddy_name"),
+    buddy_phone: getStr("buddy_phone"),
+    buddy_whatsapp: getStr("buddy_whatsapp"),
+    buddy_instagram: getStr("buddy_instagram"),
+    buddy_age: buddyAgeStr ? Number(buddyAgeStr) : undefined,
     fun_answers: funAnswers,
     payment_method: getStr("payment_method"),
   };
@@ -123,6 +130,11 @@ export async function POST(request: Request) {
     partner_phone: data.partner_phone || null,
     partner_instagram: data.partner_instagram || null,
     relationship_duration: data.relationship_duration || null,
+    buddy_name: data.buddy_name || null,
+    buddy_phone: data.buddy_phone || null,
+    buddy_whatsapp: data.buddy_whatsapp || null,
+    buddy_instagram: data.buddy_instagram || null,
+    buddy_age: data.buddy_age ?? null,
     fun_answers: data.fun_answers,
     ticket_type: ticket.ticketType,
     amount: ticket.amount,

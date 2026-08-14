@@ -9,7 +9,6 @@ import { computeTicket } from "@/lib/pricing";
 import { StepShell } from "./StepShell";
 import { GroupStep } from "./steps/GroupStep";
 import { RegistrationStep } from "./steps/RegistrationStep";
-import { FunQuestionsStep } from "./steps/FunQuestionsStep";
 import { PaymentStep } from "./steps/PaymentStep";
 
 export function BookingWizard() {
@@ -35,6 +34,10 @@ export function BookingWizard() {
       partner_phone: "",
       partner_instagram: "",
       relationship_duration: "",
+      buddy_name: "",
+      buddy_phone: "",
+      buddy_whatsapp: "",
+      buddy_instagram: "",
       fun_answers: {},
       payment_method: undefined as unknown as BookingFormValues["payment_method"],
     },
@@ -72,6 +75,14 @@ export function BookingWizard() {
       fd.append("partner_phone", values.partner_phone || "");
       fd.append("partner_instagram", values.partner_instagram || "");
       fd.append("relationship_duration", values.relationship_duration || "");
+      fd.append("buddy_name", values.buddy_name || "");
+      fd.append("buddy_phone", values.buddy_phone || "");
+      fd.append("buddy_whatsapp", values.buddy_whatsapp || "");
+      fd.append("buddy_instagram", values.buddy_instagram || "");
+      fd.append(
+        "buddy_age",
+        values.buddy_age != null ? String(values.buddy_age) : ""
+      );
       fd.append("fun_answers", JSON.stringify(values.fun_answers || {}));
       fd.append("ticket_type", ticket.ticketType);
       fd.append("amount", String(ticket.amount));
@@ -99,8 +110,7 @@ export function BookingWizard() {
     <StepShell step={step} onBack={step > 0 ? () => setStep((s) => s - 1) : undefined}>
       {step === 0 && <GroupStep form={form} onNext={() => setStep(1)} />}
       {step === 1 && <RegistrationStep form={form} onNext={() => setStep(2)} />}
-      {step === 2 && <FunQuestionsStep form={form} onNext={() => setStep(3)} />}
-      {step === 3 && (
+      {step === 2 && (
         <PaymentStep
           form={form}
           screenshot={screenshot}

@@ -7,7 +7,6 @@ import type { BookingFormValues } from "@/lib/booking-schema";
 import { GROUP_MEME, type GroupType } from "@/lib/constants";
 import { computeTicket } from "@/lib/pricing";
 import { formatPkr } from "@/lib/format";
-import { Stepper } from "@/components/ui/Stepper";
 
 const OPTIONS: { type: GroupType; emoji: string; label: string }[] = [
   { type: "single", emoji: "👤", label: "Just Me" },
@@ -76,22 +75,6 @@ export function GroupStep({ form, onNext }: GroupStepProps) {
               <span className="text-3xl">{meme.emoji}</span>
               <p className="mt-2 font-semibold">{meme.title}</p>
             </div>
-
-            {groupType === "duo" && (
-              <div className="mt-5 flex flex-col items-center gap-2">
-                <span className="text-sm text-rz-cream/70">
-                  How many in your squad?
-                </span>
-                <Stepper
-                  value={numParticipants || 2}
-                  min={2}
-                  max={10}
-                  onChange={(v) =>
-                    setValue("num_participants", v, { shouldValidate: true })
-                  }
-                />
-              </div>
-            )}
 
             {ticket && (
               <motion.div

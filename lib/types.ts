@@ -18,6 +18,11 @@ export interface Booking {
   partner_phone: string | null;
   partner_instagram: string | null;
   relationship_duration: string | null;
+  buddy_name: string | null;
+  buddy_phone: string | null;
+  buddy_whatsapp: string | null;
+  buddy_instagram: string | null;
+  buddy_age: number | null;
   fun_answers: FunAnswers;
   ticket_type: string;
   amount: number;
@@ -48,6 +53,11 @@ export interface CreateBookingPayload {
   partner_phone?: string;
   partner_instagram?: string;
   relationship_duration?: string;
+  buddy_name?: string;
+  buddy_phone?: string;
+  buddy_whatsapp?: string;
+  buddy_instagram?: string;
+  buddy_age?: number;
   fun_answers: FunAnswers;
   ticket_type: string;
   amount: number;
