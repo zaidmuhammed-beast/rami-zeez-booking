@@ -6,7 +6,6 @@ import type { UseFormReturn } from "react-hook-form";
 import type { BookingFormValues } from "@/lib/booking-schema";
 import { GROUP_MEME, type GroupType } from "@/lib/constants";
 import { computeTicket } from "@/lib/pricing";
-import { formatPkr } from "@/lib/format";
 
 const OPTIONS: { type: GroupType; emoji: string; label: string }[] = [
   { type: "single", emoji: "👤", label: "Just Me" },
@@ -81,16 +80,11 @@ export function GroupStep({ form, onNext }: GroupStepProps) {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.35, delay: 0.5 }}
-                className="mt-5 glass-strong rounded-2xl p-5 flex items-center justify-between"
+                className="mt-5 glass-strong rounded-2xl p-5"
               >
-                <div>
-                  <p className="font-semibold">{ticket.ticketType}</p>
-                  <p className="text-xs text-rz-cream/60">
-                    ☕ Coffee · 🎸 Jam · 🎨 Activities · 📸 Photos
-                  </p>
-                </div>
-                <p className="font-display text-xl font-bold text-rz-amber-400">
-                  {formatPkr(ticket.amount)}
+                <p className="font-semibold">{ticket.ticketType}</p>
+                <p className="text-xs text-rz-cream/60">
+                  ☕ Coffee · 🎸 Jam · 🎨 Activities · 📸 Photos
                 </p>
               </motion.div>
             )}
