@@ -43,7 +43,7 @@ export default async function ConfirmationPage({
       </h1>
       <p className="text-center text-rz-cream/75 mb-1">
         Welcome to the Rami ZeeZ Family
-        {companion ? ` — you and ${companion}` : ""}. See you at the Mehfil! 💜
+        {companion ? ` — you and ${companion}` : ""}. See you at {EVENT.name}! 💜
       </p>
       <p className="text-center text-rz-cream/50 text-sm mb-8">
         Your booking has been received.
@@ -78,6 +78,10 @@ export default async function ConfirmationPage({
           <div className="flex justify-between">
             <span className="text-rz-cream/60">📅 Date</span>
             <span className="font-semibold">{EVENT.dateLabel}</span>
+          </div>
+          <div className="flex justify-between">
+            <span className="text-rz-cream/60">⏰ Time</span>
+            <span className="font-semibold">{EVENT.timeLabel}</span>
           </div>
           <div className="flex justify-between">
             <span className="text-rz-cream/60">🎟 Ticket Type</span>

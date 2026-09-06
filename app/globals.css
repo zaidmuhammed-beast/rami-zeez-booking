@@ -12,6 +12,12 @@
   --rz-amber-500: #d9a441;
   --rz-amber-400: #e8bd6a;
   --rz-cream: #f3e9dc;
+  /* HUE & YOU paint palette */
+  --hue-pink: #ff5d8f;
+  --hue-coral: #ff8f57;
+  --hue-yellow: #ffd166;
+  --hue-mint: #3fdcbb;
+  --hue-sky: #5aa9ff;
   --background: var(--rz-purple-950);
   --foreground: var(--rz-cream);
 }
@@ -30,6 +36,11 @@
   --color-rz-amber-500: var(--rz-amber-500);
   --color-rz-amber-400: var(--rz-amber-400);
   --color-rz-cream: var(--rz-cream);
+  --color-hue-pink: var(--hue-pink);
+  --color-hue-coral: var(--hue-coral);
+  --color-hue-yellow: var(--hue-yellow);
+  --color-hue-mint: var(--hue-mint);
+  --color-hue-sky: var(--hue-sky);
   --font-sans: var(--font-body);
   --font-display: var(--font-display);
 }
@@ -78,6 +89,37 @@ body {
   .chip {
     @apply inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-sm font-medium bg-white/10 backdrop-blur-xl border border-white/20 shadow-2xl shadow-purple-950/40;
   }
+
+  /* Paint-splash text used by the HUE & YOU wordmark. */
+  .hue-text {
+    background-image: linear-gradient(
+      100deg,
+      var(--hue-pink) 0%,
+      var(--hue-coral) 45%,
+      var(--hue-yellow) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  .hue-text-cool {
+    background-image: linear-gradient(
+      100deg,
+      var(--hue-mint) 0%,
+      var(--hue-sky) 55%,
+      var(--rz-purple-400) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  /* Soft blurred colour washes behind the hero. */
+  .paint-blob {
+    @apply pointer-events-none absolute rounded-full;
+    filter: blur(70px);
+  }
 }
 
 @keyframes float-slow {
@@ -87,4 +129,43 @@ body {
 
 .animate-float-slow {
   animation: float-slow 6s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(0, -22px, 0) scale(1.08); }
+}
+
+.animate-drift {
+  animation: drift 14s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes brush-in {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.animate-brush-in {
+  transform-origin: left center;
+  animation: brush-in 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-slow,
+  .animate-drift,
+  .animate-brush-in,
+  .marquee-track {
+    animation: none !important;
+  }
 }

@@ -5,7 +5,7 @@ export function computeTicket(groupType: GroupType, numParticipants: number) {
     return { ticketType: "Couple Pass", amount: PRICING.couple };
   }
   if (groupType === "duo") {
-    return { ticketType: "Duo Pass", amount: PRICING.single * 2 };
+    return { ticketType: "Duo Pass", amount: PRICING.duo };
   }
   void numParticipants;
   return { ticketType: "Single Pass", amount: PRICING.single };

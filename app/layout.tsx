@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins, Plus_Jakarta_Sans } from "next/font/google";
+import { EVENT } from "@/lib/constants";
 import "./globals.css";
 
 const bodyFont = Plus_Jakarta_Sans({
@@ -14,10 +15,16 @@ const displayFont = Poppins({
   weight: ["600", "700", "800"],
 });
 
+const description = `${EVENT.tagline} — ${EVENT.dateLabel}, ${EVENT.timeLabel}. Paint, jam and play your way through an evening built for meeting people. Book your spot with ${EVENT.brand}.`;
+
 export const metadata: Metadata = {
-  title: "Rami ZeeZ — Book Your Spot in the Mehfil",
-  description:
-    "We're not just hosting events. We're building stories, friendships, and unforgettable memories. Book your spot in the Rami ZeeZ family.",
+  title: `${EVENT.name} — ${EVENT.tagline} | ${EVENT.brand}`,
+  description,
+  openGraph: {
+    title: `${EVENT.name} — ${EVENT.tagline}`,
+    description,
+    type: "website",
+  },
 };
 
 export const viewport: Viewport = {

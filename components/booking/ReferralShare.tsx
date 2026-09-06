@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
+import { EVENT } from "@/lib/constants";
 
 type ReferralShareProps = {
   link: string;
@@ -20,7 +21,7 @@ export function ReferralShare({ link }: ReferralShareProps) {
     }
   }
 
-  const shareText = `Come to the Rami ZeeZ Mehfil with me! 🎉 Book your spot here: ${link}`;
+  const shareText = `Come to ${EVENT.name} — ${EVENT.tagline} — with me! 🎨 Book your spot here: ${link}`;
   const shareHref = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
 
   return (

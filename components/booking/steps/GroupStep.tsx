@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import type { UseFormReturn } from "react-hook-form";
 import type { BookingFormValues } from "@/lib/booking-schema";
-import { GROUP_MEME, type GroupType } from "@/lib/constants";
+import { EVENT, GROUP_MEME, type GroupType } from "@/lib/constants";
 import { computeTicket } from "@/lib/pricing";
 
 const OPTIONS: { type: GroupType; emoji: string; label: string }[] = [
@@ -38,7 +38,7 @@ export function GroupStep({ form, onNext }: GroupStepProps) {
   return (
     <div>
       <h2 className="font-display text-2xl font-bold text-center mb-1">
-        Who&apos;s joining the Mehfil?
+        Who&apos;s joining you at {EVENT.name}?
       </h2>
       <p className="text-center text-rz-cream/70 mb-6">
         Pick your squad. Everything after this is personalized. 👀

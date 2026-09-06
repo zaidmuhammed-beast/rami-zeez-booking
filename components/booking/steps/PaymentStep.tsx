@@ -39,7 +39,7 @@ export function PaymentStep({
         Almost there 💳
       </h2>
       <p className="text-center text-rz-cream/70 mb-6">
-        Pay, upload your screenshot, and you&apos;re in the Mehfil.
+        Pay, upload your screenshot, and your seat is locked in.
       </p>
 
       <div className="glass-strong rounded-2xl p-4 flex items-center justify-between mb-6">

@@ -12,15 +12,17 @@ export function buildWaLink(phone: string, message: string) {
 }
 
 export function customerToBusinessLink(booking: Pick<Booking, "booking_ref" | "primary_name" | "ticket_type">) {
-  const message = `Hi Rami ZeeZ! 👋 I just booked my spot for the Mehfil.\n\nName: ${booking.primary_name}\nBooking Ref: ${booking.booking_ref}\nTicket: ${booking.ticket_type}\n\nHere's my payment screenshot for confirmation!`;
+  const message = `Hi ${EVENT.brand}! 👋 I just booked my spot for ${EVENT.name}.\n\nName: ${booking.primary_name}\nBooking Ref: ${booking.booking_ref}\nTicket: ${booking.ticket_type}\n\nHere's my payment screenshot for confirmation!`;
   return buildWaLink(EVENT.whatsappBusinessNumber, message);
 }
 
 export function confirmationTemplate(booking: Booking) {
-  return `🎉 Welcome to the Rami ZeeZ Family!
+  return `🎨 Welcome to ${EVENT.name} — ${EVENT.tagline}!
 
 Your booking has been confirmed.
 📅 Date: ${EVENT.dateLabel}
+⏰ Time: ${EVENT.timeLabel}
+📍 Venue: ${EVENT.locationLabel}
 🎟 Ticket Type: ${booking.ticket_type}
 ☕ Your free coffee is reserved!
 
@@ -29,9 +31,7 @@ Bring:
 🎉 Good Vibes
 😎 Your Selection
 
-📍 Venue details will be shared shortly before the event.
-
-See you at the Mehfil! 💜
+See you there! 💜
 
 Booking Ref: ${booking.booking_ref}`;
 }
@@ -44,6 +44,6 @@ export function adminToCustomerLink(booking: Booking) {
 export function businessChatLink(prefill?: string) {
   return buildWaLink(
     EVENT.whatsappBusinessNumber,
-    prefill || "Hi Rami ZeeZ! I have a question about the upcoming Mehfil 👀"
+    prefill || `Hi ${EVENT.brand}! I have a question about ${EVENT.name} 🎨`
   );
 }

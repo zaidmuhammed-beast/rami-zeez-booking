@@ -4,14 +4,15 @@ type MascotProps = {
   size?: number;
   className?: string;
   float?: boolean;
-  priority?: boolean;
+  /** Preloads the image — use on the hero mascot only. */
+  preload?: boolean;
 };
 
 export function Mascot({
   size = 320,
   className = "",
   float = false,
-  priority = false,
+  preload = false,
 }: MascotProps) {
   return (
     <Image
@@ -19,7 +20,7 @@ export function Mascot({
       alt="Rami ZeeZ mascot leaning on his guitar"
       width={size}
       height={size * 1.6}
-      priority={priority}
+      preload={preload}
       className={`select-none drop-shadow-[0_25px_35px_rgba(0,0,0,0.45)] ${
         float ? "animate-float-slow" : ""
       } ${className}`}

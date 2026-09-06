@@ -1,18 +1,27 @@
 export const EVENT = {
-  name: "Rami ZeeZ Mehfil",
-  date: "2026-08-23",
-  dateLabel: "23rd August",
+  brand: "Rami ZeeZ",
+  name: "HUE & YOU 1.0",
+  tagline: "Paint & Connect",
+  date: "2026-09-20",
+  dateLabel: "20th September 2026",
+  dateShort: "20 Sep",
+  // 4:00 PM Pakistan Standard Time — used by the live countdown.
+  startsAt: "2026-09-20T16:00:00+05:00",
+  timeLabel: "4:00 PM – 7:00 PM",
+  locationLabel: "Revealed soon",
   totalSlots: 50,
   // Bookings made before this date earn the Early Bird badge — adjust as needed.
-  earlyBirdCutoff: "2026-08-09",
+  earlyBirdCutoff: "2026-09-13",
   whatsappBusinessNumber:
     process.env.NEXT_PUBLIC_WHATSAPP_BUSINESS_NUMBER || "923397777234",
   whatsappBusinessDisplay: "+92 339 7777 234",
 };
 
 export const PRICING = {
-  single: 1899,
-  couple: 3499,
+  single: 1399,
+  duo: 2499,
+  // A couple pass covers two people, same as a duo.
+  couple: 2499,
 };
 
 export type GroupType = "single" | "duo" | "couple";
