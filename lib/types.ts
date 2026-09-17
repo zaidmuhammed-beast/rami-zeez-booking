@@ -64,3 +64,25 @@ export interface CreateBookingPayload {
   payment_method: string;
   referred_by?: string;
 }
+
+export type BrandInterest = "stall" | "promotion" | "both";
+
+export type BrandStatus = "new" | "contacted" | "confirmed" | "declined";
+
+export interface BrandPartner {
+  id: string;
+  brand_name: string;
+  contact_name: string;
+  phone: string;
+  whatsapp: string | null;
+  email: string | null;
+  instagram: string | null;
+  website: string | null;
+  category: string;
+  interest: BrandInterest;
+  events: string[];
+  description: string;
+  budget: string | null;
+  status: BrandStatus;
+  created_at: string;
+}

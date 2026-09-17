@@ -19,6 +19,9 @@ export function SiteFooter() {
           <Link href="/events" className="hover:text-rz-cream transition">
             Upcoming Events
           </Link>
+          <Link href="/brands" className="hover:text-rz-cream transition">
+            For Brands
+          </Link>
           <a
             href={businessChatLink()}
             target="_blank"
