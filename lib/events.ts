@@ -2,6 +2,12 @@ import { EVENT, PRICING } from "./constants";
 
 export type EventStatus = "completed" | "booking_open" | "announced";
 
+export type EventPhoto = {
+  /** Path under /public, e.g. "/images/events/couple-quiz/jam.jpg". */
+  src: string;
+  alt: string;
+};
+
 export type SiteEvent = {
   slug: string;
   emoji: string;
@@ -24,6 +30,8 @@ export type SiteEvent = {
   showSlots?: boolean;
   /** Detail page shows a placeholder until the line-up is confirmed. */
   detailsComingSoon?: boolean;
+  /** Recap photos, shown as a grid on the detail page. */
+  gallery?: EventPhoto[];
 };
 
 // The whole roster lives here — adding an event is a new entry, and the
@@ -36,9 +44,14 @@ export const EVENTS: SiteEvent[] = [
     tagline: "Quiz night meets open mic",
     description:
       "Couples went head to head on stage, the mic stayed open all evening, and nobody left without a coffee and a few new numbers.",
+    date: "2026-08-23",
+    dateLabel: "23rd August 2026",
+    timeLabel: "4:00 PM – 7:00 PM",
+    locationLabel: "SALT Cafe",
+    activities: ["❤️ Couple Quiz", "🎤 Open Mic", "🎸 Live Jam", "☕ Free coffee"],
     status: "completed",
     accent: "from-hue-pink to-hue-coral",
-    detailsComingSoon: true,
+    // gallery: add recap photos here once they're in /public/images/events.
   },
   {
     slug: "hue-and-you-1",

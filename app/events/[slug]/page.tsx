@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { SlotProgress } from "@/components/ui/SlotProgress";
@@ -137,7 +138,9 @@ export default async function EventDetailPage({
 
             {event.activities && event.activities.length > 0 && (
               <GlassCard className="mt-5 p-6">
-                <p className="font-semibold mb-3">What&apos;s happening</p>
+                <p className="font-semibold mb-3">
+                  {past ? "What happened" : "What's happening"}
+                </p>
                 <div className="flex flex-wrap gap-2">
                   {event.activities.map((activity) => (
                     <span key={activity} className="chip text-sm">
@@ -152,6 +155,34 @@ export default async function EventDetailPage({
               <GlassCard className="mt-5 p-6">
                 <SlotProgress taken={taken} total={total} />
               </GlassCard>
+            )}
+
+            {event.gallery && event.gallery.length > 0 && (
+              <div className="mt-8">
+                <p className="font-semibold mb-3">From the night 📸</p>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {event.gallery.map((photo) => (
+                    <div
+                      key={photo.src}
+                      className="relative aspect-square overflow-hidden rounded-2xl border border-white/15"
+                    >
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        fill
+                        sizes="(max-width: 640px) 50vw, 33vw"
+                        className="object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {past && !event.gallery?.length && (
+              <p className="mt-8 text-center text-sm text-rz-cream/55">
+                📸 Photos from this one are on the way.
+              </p>
             )}
 
             {!past && event.bookHref && (
