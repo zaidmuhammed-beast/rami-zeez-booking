@@ -5,6 +5,7 @@ import { SlotProgress } from "@/components/ui/SlotProgress";
 import { PaintBackdrop } from "@/components/landing/PaintBackdrop";
 import { EventCard } from "@/components/events/EventCard";
 import { EventTile } from "@/components/events/EventTile";
+import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { getSlotAvailability } from "@/lib/slots";
 import { upcomingEvents, pastEvents } from "@/lib/events";
@@ -30,6 +31,8 @@ export default async function EventsPage() {
 
   return (
     <div className="flex-1">
+      <SiteHeader />
+
       {/* ---------------------------------------------------------- Page head */}
       <section className="relative overflow-hidden">
         <PaintBackdrop />

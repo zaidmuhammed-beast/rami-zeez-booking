@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { SlotProgress } from "@/components/ui/SlotProgress";
 import { PaintBackdrop } from "@/components/landing/PaintBackdrop";
+import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { getSlotAvailability } from "@/lib/slots";
 import { EVENTS, getEvent, isPast, STATUS_LABEL, STATUS_STYLE } from "@/lib/events";
@@ -53,6 +54,8 @@ export default async function EventDetailPage({
 
   return (
     <div className="flex-1">
+      <SiteHeader />
+
       {/* ------------------------------------------------------------- Header */}
       <section className="relative overflow-hidden">
         <PaintBackdrop />

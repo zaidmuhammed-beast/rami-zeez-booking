@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { PaintBackdrop } from "@/components/landing/PaintBackdrop";
+import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { BrandForm } from "@/components/brands/BrandForm";
 import { EVENT } from "@/lib/constants";
@@ -39,6 +40,8 @@ const WHY = [
 export default function BrandsPage() {
   return (
     <div className="flex-1">
+      <SiteHeader />
+
       {/* ------------------------------------------------------------- Header */}
       <section className="relative overflow-hidden">
         <PaintBackdrop />

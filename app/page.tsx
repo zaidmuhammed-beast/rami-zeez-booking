@@ -7,6 +7,7 @@ import { Countdown } from "@/components/landing/Countdown";
 import { FactCard } from "@/components/landing/FactCard";
 import { ActivityCard } from "@/components/landing/ActivityCard";
 import { TicketCard } from "@/components/landing/TicketCard";
+import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { getSlotAvailability } from "@/lib/slots";
 import { EVENT, PRICING } from "@/lib/constants";
@@ -70,6 +71,8 @@ export default async function Home() {
 
   return (
     <div className="flex-1">
+      <SiteHeader />
+
       {/* ---------------------------------------------------------------- Hero */}
       <section className="relative overflow-hidden">
         <PaintBackdrop />
