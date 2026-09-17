@@ -1,29 +1,25 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { STATUS_LABEL, type SiteEvent } from "@/lib/events";
-
-const STATUS_STYLE: Record<SiteEvent["status"], string> = {
-  booking_open: "border-hue-mint/40 text-hue-mint",
-  announced: "border-hue-yellow/40 text-hue-yellow",
-  sold_out: "border-white/25 text-rz-cream/60",
-};
+import { STATUS_LABEL, STATUS_STYLE, type SiteEvent } from "@/lib/events";
 
 type EventCardProps = {
   event: SiteEvent;
   /** Dimmed treatment for events that have already happened. */
   past?: boolean;
-  /** Slot progress bar, passed in so the card stays a server-data-free view. */
+  /** Slot progress bar, passed in so the card stays free of data fetching. */
   slots?: ReactNode;
 };
 
 export function EventCard({ event, past = false, slots }: EventCardProps) {
+  const status = past ? "completed" : event.status;
+
   const facts = [
     { emoji: "📅", label: "Date", value: event.dateLabel },
     { emoji: "⏰", label: "Time", value: event.timeLabel },
     { emoji: "📍", label: "Location", value: event.locationLabel },
     { emoji: "🎟", label: "Passes", value: event.priceLabel },
-  ];
+  ].filter((fact): fact is typeof fact & { value: string } => Boolean(fact.value));
 
   return (
     <GlassCard
@@ -39,14 +35,14 @@ export function EventCard({ event, past = false, slots }: EventCardProps) {
         <div>
           <span className="text-3xl">{event.emoji}</span>
           <h3 className="font-display text-2xl sm:text-3xl font-extrabold mt-2">
-            {event.name}
+            <Link href={`/events/${event.slug}`} className="hover:text-hue-yellow transition">
+              {event.name}
+            </Link>
           </h3>
-          <p className="font-display font-bold text-rz-cream/80">
-            {event.tagline}
-          </p>
+          <p className="font-display font-bold text-rz-cream/80">{event.tagline}</p>
         </div>
-        <span className={`chip text-xs ${past ? STATUS_STYLE.sold_out : STATUS_STYLE[event.status]}`}>
-          {past ? "Wrapped" : STATUS_LABEL[event.status]}
+        <span className={`chip text-xs ${STATUS_STYLE[status]}`}>
+          {STATUS_LABEL[status]}
         </span>
       </div>
 
@@ -54,38 +50,54 @@ export function EventCard({ event, past = false, slots }: EventCardProps) {
         {event.description}
       </p>
 
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {facts.map((fact) => (
-          <div
-            key={fact.label}
-            className="rounded-2xl bg-white/[0.07] border border-white/10 p-4 flex items-start gap-3"
-          >
-            <span className="text-xl leading-none">{fact.emoji}</span>
-            <div className="min-w-0">
-              <p className="text-xs uppercase tracking-wider text-rz-cream/55">
-                {fact.label}
-              </p>
-              <p className="font-semibold leading-snug">{fact.value}</p>
+      {facts.length > 0 ? (
+        <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {facts.map((fact) => (
+            <div
+              key={fact.label}
+              className="rounded-2xl bg-white/[0.07] border border-white/10 p-4 flex items-start gap-3"
+            >
+              <span className="text-xl leading-none">{fact.emoji}</span>
+              <div className="min-w-0">
+                <p className="text-xs uppercase tracking-wider text-rz-cream/55">
+                  {fact.label}
+                </p>
+                <p className="font-semibold leading-snug">{fact.value}</p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <p className="mt-6 text-sm text-rz-cream/55">
+          🗓 Date, timings and passes to be announced.
+        </p>
+      )}
 
-      <div className="mt-5 flex flex-wrap gap-2">
-        {event.activities.map((activity) => (
-          <span key={activity} className="chip text-xs">
-            {activity}
-          </span>
-        ))}
-      </div>
+      {event.activities && event.activities.length > 0 && (
+        <div className="mt-5 flex flex-wrap gap-2">
+          {event.activities.map((activity) => (
+            <span key={activity} className="chip text-xs">
+              {activity}
+            </span>
+          ))}
+        </div>
+      )}
 
       {slots && <div className="mt-6">{slots}</div>}
 
-      {!past && event.bookHref && (
-        <Link href={event.bookHref} className="btn-primary mt-7 w-full sm:w-auto">
-          🎟 Book Your Spot
+      <div className="mt-7 flex flex-wrap items-center gap-4">
+        {!past && event.bookHref && (
+          <Link href={event.bookHref} className="btn-primary">
+            🎟 Book Your Spot
+          </Link>
+        )}
+        <Link
+          href={`/events/${event.slug}`}
+          className="text-sm text-rz-cream/70 underline underline-offset-4 decoration-white/25 hover:text-rz-cream transition"
+        >
+          View event details →
         </Link>
-      )}
+      </div>
     </GlassCard>
   );
 }
