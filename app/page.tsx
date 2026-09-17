@@ -7,6 +7,7 @@ import { Countdown } from "@/components/landing/Countdown";
 import { FactCard } from "@/components/landing/FactCard";
 import { ActivityCard } from "@/components/landing/ActivityCard";
 import { TicketCard } from "@/components/landing/TicketCard";
+import { SiteFooter } from "@/components/layout/SiteFooter";
 import { getSlotAvailability } from "@/lib/slots";
 import { EVENT, PRICING } from "@/lib/constants";
 import { businessChatLink } from "@/lib/whatsapp";
@@ -117,6 +118,14 @@ export default async function Home() {
             </div>
             <p className="mt-3 text-sm text-rz-cream/60">
               {EVENT.whatsappBusinessDisplay}
+            </p>
+            <p className="mt-4 text-sm">
+              <Link
+                href="/events"
+                className="text-rz-cream/70 underline underline-offset-4 decoration-white/25 hover:text-rz-cream transition"
+              >
+                📅 See all upcoming events
+              </Link>
             </p>
           </div>
 
@@ -269,25 +278,8 @@ export default async function Home() {
         </GlassCard>
       </section>
 
-      {/* ------------------------------------------------------------- Footer */}
-      <footer className="border-t border-white/10">
-        <div className="mx-auto max-w-6xl px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-sm text-rz-cream/55">
-          <p>
-            <span className="font-display font-bold text-rz-cream/80">
-              {EVENT.name}
-            </span>{" "}
-            · {EVENT.tagline} · by {EVENT.brand}
-          </p>
-          <a
-            href={businessChatLink()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-rz-cream transition"
-          >
-            💬 {EVENT.whatsappBusinessDisplay}
-          </a>
-        </div>
-      </footer>
+      <SiteFooter />
+
     </div>
   );
 }
