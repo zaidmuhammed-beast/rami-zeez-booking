@@ -7,9 +7,12 @@ import { Countdown } from "@/components/landing/Countdown";
 import { FactCard } from "@/components/landing/FactCard";
 import { ActivityCard } from "@/components/landing/ActivityCard";
 import { TicketCard } from "@/components/landing/TicketCard";
+import { CookingHero } from "@/components/landing/CookingHero";
+import { EventTile } from "@/components/events/EventTile";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { getSlotAvailability } from "@/lib/slots";
+import { upcomingEvents, pastEvents } from "@/lib/events";
 import { EVENT, PRICING } from "@/lib/constants";
 import { businessChatLink } from "@/lib/whatsapp";
 
@@ -68,6 +71,96 @@ const MARQUEE_WORDS = [
 
 export default async function Home() {
   const { taken, total } = await getSlotAvailability();
+  const upcoming = upcomingEvents();
+  const past = pastEvents();
+  // Everything event-specific below hangs off this: with nothing on sale the
+  // page switches to the cooking hero rather than pushing a finished event.
+  const onSale = upcoming.find((e) => e.status === "booking_open");
+  const inTheWorks = upcoming.filter((e) => e.status !== "booking_open");
+
+  if (!onSale) {
+    return (
+      <div className="flex-1">
+        <SiteHeader />
+        <CookingHero />
+
+        {inTheWorks.length > 0 && (
+          <section className="mx-auto max-w-5xl px-6 py-10">
+            <h2 className="font-display text-sm uppercase tracking-[0.2em] text-rz-cream/50 mb-4">
+              On the menu
+            </h2>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {inTheWorks.map((event) => (
+                <EventTile key={event.slug} event={event} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section aria-hidden className="overflow-hidden py-4 border-y border-white/10 bg-white/[0.04]">
+          <div className="marquee-track">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="flex shrink-0">
+                {MARQUEE_WORDS.map((word) => (
+                  <span
+                    key={`${copy}-${word}`}
+                    className="font-display font-extrabold text-lg sm:text-xl text-rz-cream/45 px-6 whitespace-nowrap"
+                  >
+                    {word}
+                    <span className="text-hue-pink"> ●</span>
+                  </span>
+                ))}
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {past.length > 0 && (
+          <section className="mx-auto max-w-5xl px-6 py-12">
+            <h2 className="font-display text-2xl sm:text-3xl font-bold text-center">
+              What we&apos;ve thrown
+            </h2>
+            <p className="mt-3 text-center text-rz-cream/70">
+              A taste of what the next one will be like.
+            </p>
+            <div className="mt-8 grid sm:grid-cols-2 gap-4">
+              {past.map((event) => (
+                <EventTile key={event.slug} event={event} past />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className="mx-auto max-w-3xl px-6 pb-20 text-center">
+          <GlassCard strong className="relative overflow-hidden p-8 sm:p-10">
+            <span
+              aria-hidden
+              className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-hue-pink via-hue-yellow to-hue-sky"
+            />
+            <h2 className="font-display text-2xl sm:text-3xl font-bold mb-3">
+              Don&apos;t miss the next one 🔔
+            </h2>
+            <p className="text-rz-cream/75 mb-8">
+              Seats go fast and we announce here first. Message us and
+              you&apos;ll know before anyone else.
+            </p>
+            <a
+              href={businessChatLink(
+                `Hi ${EVENT.brand}! Let me know when your next event drops 🔔`
+              )}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary text-base"
+            >
+              🔔 Tell me first
+            </a>
+          </GlassCard>
+        </section>
+
+        <SiteFooter />
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1">

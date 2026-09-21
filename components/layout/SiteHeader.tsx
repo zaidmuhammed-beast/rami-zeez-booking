@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { EVENT } from "@/lib/constants";
+import { upcomingEvents } from "@/lib/events";
 
 const LINKS = [
   { href: "/", label: "Home" },
@@ -14,6 +15,8 @@ const LINKS = [
 export function SiteHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  // No live event means no Book CTA — /book has nothing to sell.
+  const onSale = upcomingEvents().some((e) => e.status === "booking_open");
 
   function isActive(href: string) {
     return href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -42,9 +45,11 @@ export function SiteHeader() {
               {link.label}
             </Link>
           ))}
-          <Link href="/book" className="btn-primary ml-2 px-5 py-2 text-sm">
-            🎟 Book
-          </Link>
+          {onSale && (
+            <Link href="/book" className="btn-primary ml-2 px-5 py-2 text-sm">
+              🎟 Book
+            </Link>
+          )}
         </nav>
 
         {/* -------------------------------------------------------- Mobile */}
@@ -81,13 +86,15 @@ export function SiteHeader() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/book"
-            onClick={() => setOpen(false)}
-            className="btn-primary mt-2"
-          >
-            🎟 Book Your Spot
-          </Link>
+          {onSale && (
+            <Link
+              href="/book"
+              onClick={() => setOpen(false)}
+              className="btn-primary mt-2"
+            >
+              🎟 Book Your Spot
+            </Link>
+          )}
         </div>
       </nav>
     </header>
