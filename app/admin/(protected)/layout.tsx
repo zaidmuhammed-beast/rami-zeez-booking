@@ -27,6 +27,12 @@ export default function AdminProtectedLayout({
             >
               Brands
             </Link>
+            <Link
+              href="/admin/ambassadors"
+              className="rounded-full px-3 py-1.5 hover:bg-white/10 transition"
+            >
+              Ambassadors
+            </Link>
           </nav>
         </div>
         <LogoutButton />

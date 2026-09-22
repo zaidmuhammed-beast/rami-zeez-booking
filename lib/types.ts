@@ -86,3 +86,22 @@ export interface BrandPartner {
   status: BrandStatus;
   created_at: string;
 }
+
+export type AmbassadorStatus = "new" | "contacted" | "selected" | "declined";
+
+export interface Ambassador {
+  id: string;
+  full_name: string;
+  university: string;
+  city: string;
+  study_year: string | null;
+  phone: string;
+  whatsapp: string | null;
+  email: string | null;
+  instagram: string;
+  follower_range: string | null;
+  why: string;
+  experience: string | null;
+  status: AmbassadorStatus;
+  created_at: string;
+}

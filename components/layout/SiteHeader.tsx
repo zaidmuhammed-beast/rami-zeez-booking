@@ -10,6 +10,7 @@ const LINKS = [
   { href: "/", label: "Home" },
   { href: "/events", label: "Upcoming Events" },
   { href: "/brands", label: "For Brands" },
+  { href: "/ambassadors", label: "Ambassadors" },
 ];
 
 export function SiteHeader() {
