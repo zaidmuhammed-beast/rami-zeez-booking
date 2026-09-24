@@ -111,6 +111,10 @@ export async function POST(request: Request) {
     });
 
   if (uploadError) {
+    console.error("[bookings] screenshot upload failed", {
+      bookingRef,
+      message: uploadError.message,
+    });
     return NextResponse.json(
       { error: "Couldn't upload your screenshot. Please try again." },
       { status: 500 }
@@ -146,6 +150,13 @@ export async function POST(request: Request) {
   });
 
   if (insertError) {
+    console.error("[bookings] insert failed", {
+      bookingRef,
+      code: insertError.code,
+      message: insertError.message,
+      details: insertError.details,
+      hint: insertError.hint,
+    });
     return NextResponse.json(
       { error: "Couldn't save your booking. Please try again." },
       { status: 500 }

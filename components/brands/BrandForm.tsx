@@ -32,6 +32,7 @@ function Label({ children, hint }: { children: React.ReactNode; hint?: string })
 export function BrandForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [rescueLink, setRescueLink] = useState<string | null>(null);
 
   const {
     register,
@@ -69,8 +70,29 @@ export function BrandForm() {
     setValue("events", next, { shouldValidate: true });
   }
 
+  /** Their answers as a WhatsApp message, so a failed save isn't a lost lead. */
+  function buildRescueLink(values: BrandFormValues) {
+    const lines = [
+      `Hi ${EVENT.brand}! The brand form wouldn't submit, so here are my details 🤝`,
+      "",
+      `Brand: ${values.brand_name}`,
+      `Contact: ${values.contact_name}`,
+      `Phone: ${values.phone}`,
+      values.email ? `Email: ${values.email}` : "",
+      values.instagram ? `Instagram: ${values.instagram}` : "",
+      values.website ? `Website: ${values.website}` : "",
+      `Category: ${values.category}`,
+      `Looking for: ${values.interest}`,
+      values.budget ? `Budget: ${values.budget}` : "",
+      "",
+      `About us: ${values.description}`,
+    ].filter(Boolean);
+    return businessChatLink(lines.join("\n"));
+  }
+
   async function onSubmit(values: BrandFormValues) {
     setSubmitError(null);
+    setRescueLink(null);
     try {
       const res = await fetch("/api/brands", {
         method: "POST",
@@ -80,6 +102,7 @@ export function BrandForm() {
       const json = await res.json().catch(() => ({}));
       if (!res.ok) {
         setSubmitError(json.error || "Something went wrong. Please try again.");
+        setRescueLink(buildRescueLink(values));
         return;
       }
       setSubmitted(true);
@@ -87,6 +110,7 @@ export function BrandForm() {
       setSubmitError(
         "Couldn't reach the server. Check your connection, or send us the details on WhatsApp."
       );
+      setRescueLink(buildRescueLink(values));
     }
   }
 
@@ -304,7 +328,24 @@ export function BrandForm() {
         </div>
 
         {submitError && (
-          <p className="mt-6 text-sm text-rose-300">{submitError}</p>
+          <div className="mt-6 rounded-2xl border border-rose-400/30 bg-rose-400/10 p-4">
+            <p className="text-sm text-rose-200">{submitError}</p>
+            {rescueLink && (
+              <>
+                <p className="mt-2 text-xs text-rz-cream/70">
+                  Don&apos;t retype it — send us what you wrote in one tap.
+                </p>
+                <a
+                  href={rescueLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-ghost mt-3 w-full text-sm"
+                >
+                  💬 Send my details on WhatsApp
+                </a>
+              </>
+            )}
+          </div>
         )}
 
         <button

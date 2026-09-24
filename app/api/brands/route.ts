@@ -54,6 +54,14 @@ export async function POST(request: Request) {
     });
 
   if (insertError) {
+    // Surface the real cause in the server logs — "relation does not exist"
+    // means the migration hasn't been run yet.
+    console.error("[brands] insert failed", {
+      code: insertError.code,
+      message: insertError.message,
+      details: insertError.details,
+      hint: insertError.hint,
+    });
     return NextResponse.json(
       {
         error:

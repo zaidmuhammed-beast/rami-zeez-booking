@@ -30,6 +30,7 @@ function Label({ children, hint }: { children: React.ReactNode; hint?: string })
 export function AmbassadorForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [rescueLink, setRescueLink] = useState<string | null>(null);
 
   const {
     register,
@@ -53,8 +54,29 @@ export function AmbassadorForm() {
     },
   });
 
+  /** Their answers as a WhatsApp message, so a failed save isn't a lost lead. */
+  function buildRescueLink(values: AmbassadorFormValues) {
+    const lines = [
+      `Hi ${EVENT.brand}! The ambassador form wouldn't submit, so here are my details 🎓`,
+      "",
+      `Name: ${values.full_name}`,
+      `University: ${values.university}`,
+      `City: ${values.city}`,
+      values.study_year ? `Year: ${values.study_year}` : "",
+      `Phone: ${values.phone}`,
+      values.email ? `Email: ${values.email}` : "",
+      `Instagram: ${values.instagram}`,
+      values.follower_range ? `Followers: ${values.follower_range}` : "",
+      "",
+      `Why me: ${values.why}`,
+      values.experience ? `Experience: ${values.experience}` : "",
+    ].filter(Boolean);
+    return businessChatLink(lines.join("\n"));
+  }
+
   async function onSubmit(values: AmbassadorFormValues) {
     setSubmitError(null);
+    setRescueLink(null);
     try {
       const res = await fetch("/api/ambassadors", {
         method: "POST",
@@ -64,6 +86,7 @@ export function AmbassadorForm() {
       const json = await res.json().catch(() => ({}));
       if (!res.ok) {
         setSubmitError(json.error || "Something went wrong. Please try again.");
+        setRescueLink(buildRescueLink(values));
         return;
       }
       setSubmitted(true);
@@ -71,6 +94,7 @@ export function AmbassadorForm() {
       setSubmitError(
         "Couldn't reach the server. Check your connection, or send it to us on WhatsApp."
       );
+      setRescueLink(buildRescueLink(values));
     }
   }
 
@@ -254,7 +278,26 @@ export function AmbassadorForm() {
           </label>
         </div>
 
-        {submitError && <p className="mt-6 text-sm text-rose-300">{submitError}</p>}
+        {submitError && (
+          <div className="mt-6 rounded-2xl border border-rose-400/30 bg-rose-400/10 p-4">
+            <p className="text-sm text-rose-200">{submitError}</p>
+            {rescueLink && (
+              <>
+                <p className="mt-2 text-xs text-rz-cream/70">
+                  Don&apos;t retype it — send us what you wrote in one tap.
+                </p>
+                <a
+                  href={rescueLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-ghost mt-3 w-full text-sm"
+                >
+                  💬 Send my application on WhatsApp
+                </a>
+              </>
+            )}
+          </div>
+        )}
 
         <button
           type="submit"
