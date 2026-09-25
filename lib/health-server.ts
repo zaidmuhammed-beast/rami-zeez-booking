@@ -42,17 +42,36 @@ export async function checkTables(): Promise<TableCheck[]> {
 
   return Promise.all(
     TABLES.map(async (t) => {
+      // A head-only request returns no body, so PostgREST errors like
+      // PGRST205 arrive as error: null and a missing table looks empty.
+      // Fetch a row so failures actually surface.
       const { count, error } = await db
         .from(t.table)
-        .select("*", { count: "exact", head: true });
+        .select("*", { count: "exact" })
+        .limit(1);
 
-      return {
-        ...t,
-        ok: !error,
-        rows: count ?? null,
-        code: error?.code || null,
-        message: error?.message || null,
-      };
+      if (error) {
+        return {
+          ...t,
+          ok: false,
+          rows: null,
+          code: error.code || null,
+          message: error.message || null,
+        };
+      }
+
+      if (count === null) {
+        return {
+          ...t,
+          ok: false,
+          rows: null,
+          code: "NO_COUNT",
+          message:
+            "The table responded without a row count — it may not be exposed through the API.",
+        };
+      }
+
+      return { ...t, ok: true, rows: count, code: null, message: null };
     })
   );
 }
