@@ -146,7 +146,7 @@ export default function AmbassadorsPage() {
           Apply for your campus
         </h2>
         <p className="text-center text-rz-cream/70 mb-8">
-          Takes a minute. Anything marked optional you can skip.
+          Takes a minute — every field is required, so we get the full picture.
         </p>
         <AmbassadorForm />
       </section>

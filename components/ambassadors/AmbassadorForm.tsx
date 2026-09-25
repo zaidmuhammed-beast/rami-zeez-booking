@@ -43,12 +43,12 @@ export function AmbassadorForm() {
       full_name: "",
       university: "",
       city: "",
-      study_year: "",
+      study_year: undefined,
       phone: "",
       whatsapp: "",
       email: "",
       instagram: "",
-      follower_range: "",
+      follower_range: undefined,
       why: "",
       experience: "",
       company_website_url: "",
@@ -165,17 +165,17 @@ export function AmbassadorForm() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <Label hint="optional">WhatsApp</Label>
+              <Label>WhatsApp</Label>
               <input
                 className="input-glass"
-                placeholder="If different from above"
+                placeholder="03xx xxxxxxx"
                 inputMode="tel"
                 {...register("whatsapp")}
               />
               <FieldError message={errors.whatsapp?.message} />
             </div>
             <div>
-              <Label hint="optional">Email</Label>
+              <Label>Email</Label>
               <input
                 className="input-glass"
                 placeholder="you@university.edu.pk"
@@ -211,15 +211,18 @@ export function AmbassadorForm() {
               <FieldError message={errors.city?.message} />
             </div>
             <div>
-              <Label hint="optional">Year of study</Label>
+              <Label>Year of study</Label>
               <select className="input-glass" defaultValue="" {...register("study_year")}>
-                <option value="">Prefer not to say</option>
+                <option value="" disabled>
+                  Pick one
+                </option>
                 {STUDY_YEARS.map((y) => (
                   <option key={y} value={y} className="bg-rz-purple-900">
                     {y}
                   </option>
                 ))}
               </select>
+              <FieldError message={errors.study_year?.message} />
             </div>
           </div>
         </div>
@@ -237,15 +240,18 @@ export function AmbassadorForm() {
             <FieldError message={errors.instagram?.message} />
           </div>
           <div>
-            <Label hint="optional">Followers</Label>
+            <Label>Followers</Label>
             <select className="input-glass" defaultValue="" {...register("follower_range")}>
-              <option value="">Prefer not to say</option>
+              <option value="" disabled>
+                Pick one
+              </option>
               {FOLLOWER_RANGES.map((r) => (
                 <option key={r} value={r} className="bg-rz-purple-900">
                   {r}
                 </option>
               ))}
             </select>
+            <FieldError message={errors.follower_range?.message} />
           </div>
         </div>
 
@@ -263,13 +269,14 @@ export function AmbassadorForm() {
             <FieldError message={errors.why?.message} />
           </div>
           <div>
-            <Label hint="optional">Societies or events you&apos;ve worked on</Label>
+            <Label>Societies or events you&apos;ve worked on</Label>
             <textarea
               className="input-glass min-h-20 resize-y"
               rows={3}
-              placeholder="Anything you've organised, hosted or promoted before."
+              placeholder="Anything you've organised, hosted or promoted. Write 'none' if this would be your first."
               {...register("experience")}
             />
+            <FieldError message={errors.experience?.message} />
           </div>
         </div>
 

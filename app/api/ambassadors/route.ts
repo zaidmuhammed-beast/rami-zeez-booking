@@ -40,14 +40,14 @@ export async function POST(request: Request) {
     full_name: data.full_name,
     university: data.university,
     city: data.city,
-    study_year: data.study_year || null,
+    study_year: data.study_year,
     phone: data.phone,
-    whatsapp: data.whatsapp || null,
-    email: data.email || null,
+    whatsapp: data.whatsapp,
+    email: data.email,
     instagram: data.instagram,
-    follower_range: data.follower_range || null,
+    follower_range: data.follower_range,
     why: data.why,
-    experience: data.experience || null,
+    experience: data.experience,
   });
 
   if (insertError) {
