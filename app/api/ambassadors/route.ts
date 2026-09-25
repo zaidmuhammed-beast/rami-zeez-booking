@@ -63,6 +63,8 @@ export async function POST(request: Request) {
       {
         error:
           "Couldn't save your application. Please try again, or send it to us on WhatsApp.",
+        // Shown small under the message — lets anyone report the real cause.
+        code: insertError.code || "unknown",
       },
       { status: 500 }
     );

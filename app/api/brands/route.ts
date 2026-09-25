@@ -66,6 +66,8 @@ export async function POST(request: Request) {
       {
         error:
           "Couldn't save your details. Please try again, or send them to us on WhatsApp.",
+        // Shown small under the message — lets anyone report the real cause.
+        code: insertError.code || "unknown",
       },
       { status: 500 }
     );

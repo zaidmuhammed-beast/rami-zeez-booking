@@ -33,6 +33,7 @@ export function BrandForm() {
   const [submitted, setSubmitted] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [rescueLink, setRescueLink] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<string | null>(null);
 
   const {
     register,
@@ -93,6 +94,7 @@ export function BrandForm() {
   async function onSubmit(values: BrandFormValues) {
     setSubmitError(null);
     setRescueLink(null);
+    setErrorCode(null);
     try {
       const res = await fetch("/api/brands", {
         method: "POST",
@@ -102,6 +104,7 @@ export function BrandForm() {
       const json = await res.json().catch(() => ({}));
       if (!res.ok) {
         setSubmitError(json.error || "Something went wrong. Please try again.");
+        setErrorCode(json.code || null);
         setRescueLink(buildRescueLink(values));
         return;
       }
@@ -330,6 +333,11 @@ export function BrandForm() {
         {submitError && (
           <div className="mt-6 rounded-2xl border border-rose-400/30 bg-rose-400/10 p-4">
             <p className="text-sm text-rose-200">{submitError}</p>
+            {errorCode && (
+              <p className="mt-1 text-[11px] font-mono text-rz-cream/45">
+                ref: {errorCode}
+              </p>
+            )}
             {rescueLink && (
               <>
                 <p className="mt-2 text-xs text-rz-cream/70">
