@@ -180,3 +180,77 @@ export async function runWriteTests(): Promise<WriteCheck[]> {
     })
   );
 }
+
+export type KeyCheck = {
+  kind: string;
+  ok: boolean;
+  note: string;
+};
+
+/**
+ * Identifies the configured key WITHOUT revealing it. Supabase's new keys are
+ * prefixed; the legacy ones are JWTs carrying a "role" claim. A publishable
+ * or anon key reads happily under RLS and returns zero rows, then fails every
+ * write — which looks exactly like an empty table.
+ */
+export function checkServiceKey(): KeyCheck {
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!key) {
+    return {
+      kind: "missing",
+      ok: false,
+      note: "SUPABASE_SERVICE_ROLE_KEY isn't set in the environment.",
+    };
+  }
+
+  if (key.startsWith("sb_secret_")) {
+    return {
+      kind: "secret (new format)",
+      ok: true,
+      note: "Full access — bypasses row level security. Correct for server-side writes.",
+    };
+  }
+
+  if (key.startsWith("sb_publishable_")) {
+    return {
+      kind: "publishable (new format)",
+      ok: false,
+      note: "This is the browser-safe key. It cannot bypass row level security, so reads return nothing and writes are rejected. Replace it with the secret key (Settings > API Keys > Secret keys).",
+    };
+  }
+
+  if (key.startsWith("eyJ")) {
+    // Legacy JWT — the role claim is in the unverified payload.
+    try {
+      const payload = JSON.parse(
+        Buffer.from(key.split(".")[1], "base64").toString("utf8")
+      ) as { role?: string };
+
+      if (payload.role === "service_role") {
+        return {
+          kind: "legacy service_role",
+          ok: true,
+          note: "Full access — bypasses row level security.",
+        };
+      }
+      return {
+        kind: `legacy ${payload.role || "unknown"}`,
+        ok: false,
+        note: "This key can't bypass row level security, so writes are rejected. Use the service_role (or new secret) key instead.",
+      };
+    } catch {
+      return {
+        kind: "legacy JWT",
+        ok: false,
+        note: "Couldn't read the role from this key.",
+      };
+    }
+  }
+
+  return {
+    kind: "unrecognised",
+    ok: false,
+    note: "This doesn't look like a Supabase key.",
+  };
+}

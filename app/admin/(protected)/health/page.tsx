@@ -1,5 +1,11 @@
 import Link from "next/link";
-import { checkTables, checkBucket, explain, runWriteTests } from "@/lib/health-server";
+import {
+  checkTables,
+  checkBucket,
+  explain,
+  runWriteTests,
+  checkServiceKey,
+} from "@/lib/health-server";
 import { GlassCard } from "@/components/ui/GlassCard";
 
 // Always probe live — a cached result would defeat the point.
@@ -19,6 +25,7 @@ export default async function AdminHealthPage({
     runWrites ? runWriteTests() : Promise.resolve([]),
   ]);
   const broken = tables.filter((t) => !t.ok);
+  const key = checkServiceKey();
 
   return (
     <div className="mx-auto max-w-3xl px-4 sm:px-6 py-8">
@@ -48,6 +55,13 @@ export default async function AdminHealthPage({
           </p>
         </GlassCard>
       )}
+
+      <GlassCard className={`p-5 mb-6 ${key.ok ? "" : "border-rose-400/30"}`}>
+        <p className="font-semibold">
+          {key.ok ? "✅" : "❌"} Database key: {key.kind}
+        </p>
+        <p className="mt-1 text-sm text-rz-cream/70">{key.note}</p>
+      </GlassCard>
 
       <GlassCard className="p-5 mb-6">
         <p className="font-semibold">Write test</p>
