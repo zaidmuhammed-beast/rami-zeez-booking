@@ -42,15 +42,15 @@ export async function POST(request: Request) {
       brand_name: data.brand_name,
       contact_name: data.contact_name,
       phone: data.phone,
-      whatsapp: data.whatsapp || null,
-      email: data.email || null,
-      instagram: data.instagram || null,
-      website: data.website || null,
+      whatsapp: data.whatsapp,
+      email: data.email,
+      instagram: data.instagram,
+      website: data.website,
       category: data.category,
       interest: data.interest,
       events: data.events,
       description: data.description,
-      budget: data.budget || null,
+      budget: data.budget,
     });
 
   if (insertError) {

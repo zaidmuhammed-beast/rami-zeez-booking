@@ -55,7 +55,7 @@ export function BrandForm() {
       interest: undefined,
       events: [],
       description: "",
-      budget: "",
+      budget: undefined,
       company_website_url: "",
     },
   });
@@ -192,17 +192,17 @@ export function BrandForm() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <Label hint="optional">WhatsApp</Label>
+              <Label>WhatsApp</Label>
               <input
                 className="input-glass"
-                placeholder="If different from above"
+                placeholder="03xx xxxxxxx"
                 inputMode="tel"
                 {...register("whatsapp")}
               />
               <FieldError message={errors.whatsapp?.message} />
             </div>
             <div>
-              <Label hint="optional">Email</Label>
+              <Label>Email</Label>
               <input
                 className="input-glass"
                 placeholder="hello@brand.com"
@@ -215,7 +215,7 @@ export function BrandForm() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <Label hint="optional">Instagram</Label>
+              <Label>Instagram</Label>
               <input
                 className="input-glass"
                 placeholder="@yourbrand"
@@ -224,10 +224,10 @@ export function BrandForm() {
               <FieldError message={errors.instagram?.message} />
             </div>
             <div>
-              <Label hint="optional">Website</Label>
+              <Label>Website</Label>
               <input
                 className="input-glass"
-                placeholder="yourbrand.com"
+                placeholder="yourbrand.com — or 'none'"
                 {...register("website")}
               />
               <FieldError message={errors.website?.message} />
@@ -274,7 +274,7 @@ export function BrandForm() {
         <FieldError message={errors.interest?.message} />
 
         <div className="mt-5">
-          <Label hint="optional, pick any">Events you&apos;re interested in</Label>
+          <Label hint="pick at least one">Events you&apos;re interested in</Label>
           <div className="flex flex-wrap gap-2">
             {EVENTS.filter((e) => e.status !== "completed").map((e) => {
               const on = selectedEvents.includes(e.slug);
@@ -295,18 +295,22 @@ export function BrandForm() {
               );
             })}
           </div>
+          <FieldError message={errors.events?.message} />
         </div>
 
         <div className="mt-5">
-          <Label hint="optional">Budget range</Label>
+          <Label>Budget range</Label>
           <select className="input-glass" defaultValue="" {...register("budget")}>
-            <option value="">Prefer not to say</option>
+            <option value="" disabled>
+              Pick one
+            </option>
             {BRAND_BUDGETS.map((b) => (
               <option key={b} value={b} className="bg-rz-purple-900">
                 {b}
               </option>
             ))}
           </select>
+          <FieldError message={errors.budget?.message} />
         </div>
 
         {/* ---------------------------------------------------- The pitch */}

@@ -96,7 +96,7 @@ export default function BrandsPage() {
           Tell us about your brand
         </h2>
         <p className="text-center text-rz-cream/70 mb-8">
-          Takes a minute. Anything marked optional you can skip.
+          Takes a minute — every field is required, so we can quote you properly.
         </p>
         <BrandForm />
       </section>
