@@ -97,3 +97,86 @@ export function explain(check: TableCheck): string | null {
       return null;
   }
 }
+
+export type WriteCheck = {
+  table: string;
+  label: string;
+  ok: boolean;
+  /** True when the test row was written but couldn't be cleaned up. */
+  leftover: boolean;
+  code: string | null;
+  message: string | null;
+};
+
+/**
+ * Inserts a clearly-marked row and deletes it again, so we test the exact
+ * path the public forms use. A read succeeding proves nothing about writes:
+ * a missing column or a failed constraint only shows up on insert.
+ *
+ * Bookings is deliberately excluded — a stray row there would pollute the
+ * slot counter and the dashboard.
+ */
+export async function runWriteTests(): Promise<WriteCheck[]> {
+  if (!isSupabaseAdminConfigured || !supabaseAdmin) {
+    return [];
+  }
+  const db = supabaseAdmin;
+
+  const probes: { table: string; label: string; row: Record<string, unknown> }[] = [
+    {
+      table: "brand_partners",
+      label: "Brand enquiries",
+      row: {
+        brand_name: "__health_check__",
+        contact_name: "__health_check__",
+        phone: "0000000000",
+        category: "Other",
+        interest: "stall",
+        events: [],
+        description: "Automated write test from /admin/health.",
+      },
+    },
+    {
+      table: "ambassadors",
+      label: "Ambassador applications",
+      row: {
+        full_name: "__health_check__",
+        university: "__health_check__",
+        city: "__health_check__",
+        phone: "0000000000",
+        instagram: "@__health_check__",
+        why: "Automated write test from /admin/health.",
+      },
+    },
+  ];
+
+  return Promise.all(
+    probes.map(async ({ table, label, row }) => {
+      const { data, error } = await db.from(table).insert(row).select("id").maybeSingle();
+
+      if (error || !data) {
+        return {
+          table,
+          label,
+          ok: false,
+          leftover: false,
+          code: error?.code || null,
+          message: error?.message || "Insert returned no row.",
+        };
+      }
+
+      const { error: cleanupError } = await db.from(table).delete().eq("id", data.id);
+
+      return {
+        table,
+        label,
+        ok: true,
+        leftover: Boolean(cleanupError),
+        code: null,
+        message: cleanupError
+          ? `Wrote fine, but the test row couldn't be removed: ${cleanupError.message}`
+          : null,
+      };
+    })
+  );
+}

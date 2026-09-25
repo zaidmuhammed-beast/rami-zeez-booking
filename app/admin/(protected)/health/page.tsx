@@ -1,11 +1,23 @@
-import { checkTables, checkBucket, explain } from "@/lib/health-server";
+import Link from "next/link";
+import { checkTables, checkBucket, explain, runWriteTests } from "@/lib/health-server";
 import { GlassCard } from "@/components/ui/GlassCard";
 
 // Always probe live — a cached result would defeat the point.
 export const dynamic = "force-dynamic";
 
-export default async function AdminHealthPage() {
-  const [tables, bucket] = await Promise.all([checkTables(), checkBucket()]);
+export default async function AdminHealthPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ write?: string }>;
+}) {
+  const { write } = await searchParams;
+  const runWrites = write === "1";
+
+  const [tables, bucket, writes] = await Promise.all([
+    checkTables(),
+    checkBucket(),
+    runWrites ? runWriteTests() : Promise.resolve([]),
+  ]);
   const broken = tables.filter((t) => !t.ok);
 
   return (
@@ -36,6 +48,49 @@ export default async function AdminHealthPage() {
           </p>
         </GlassCard>
       )}
+
+      <GlassCard className="p-5 mb-6">
+        <p className="font-semibold">Write test</p>
+        <p className="mt-1 text-sm text-rz-cream/70">
+          The checks below only read. This writes a marked row to the two form
+          tables and deletes it again — the exact path a submission takes.
+        </p>
+
+        {writes.length === 0 ? (
+          <Link href="/admin/health?write=1" className="btn-ghost mt-4 text-sm">
+            ▶ Run write test
+          </Link>
+        ) : (
+          <div className="mt-4 space-y-3">
+            {writes.map((w) => (
+              <div key={w.table} className="rounded-2xl bg-white/[0.07] border border-white/10 p-4">
+                <p className="font-semibold text-sm">
+                  {w.ok ? "✅" : "❌"} {w.label}
+                </p>
+                {w.ok && !w.leftover && (
+                  <p className="mt-1 text-xs text-rz-cream/60">
+                    Wrote and cleaned up. Submissions to this form will save.
+                  </p>
+                )}
+                {w.message && (
+                  <p className="mt-2 text-xs text-rz-cream/70 font-mono break-words">
+                    {w.code ? `${w.code}: ` : ""}
+                    {w.message}
+                  </p>
+                )}
+                {w.leftover && (
+                  <p className="mt-2 text-xs text-amber-200">
+                    👉 Delete the __health_check__ row from {w.table} by hand.
+                  </p>
+                )}
+              </div>
+            ))}
+            <Link href="/admin/health" className="btn-ghost mt-2 text-sm">
+              ↺ Back to read-only check
+            </Link>
+          </div>
+        )}
+      </GlassCard>
 
       <div className="space-y-3">
         {tables.map((check) => {
