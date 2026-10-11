@@ -7,6 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { bookingFormSchema, type BookingFormValues } from "@/lib/booking-schema";
 import { computeTicket } from "@/lib/pricing";
 import { StepShell } from "./StepShell";
+import { ShowStep } from "./steps/ShowStep";
 import { GroupStep } from "./steps/GroupStep";
 import { RegistrationStep } from "./steps/RegistrationStep";
 import { PaymentStep } from "./steps/PaymentStep";
@@ -24,6 +25,7 @@ export function BookingWizard() {
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(bookingFormSchema),
     defaultValues: {
+      show_time: undefined as unknown as BookingFormValues["show_time"],
       group_type: undefined as unknown as BookingFormValues["group_type"],
       num_participants: 1,
       primary_name: "",
@@ -64,6 +66,7 @@ export function BookingWizard() {
     setIsSubmitting(true);
     try {
       const fd = new FormData();
+      fd.append("show_time", values.show_time);
       fd.append("group_type", values.group_type);
       fd.append("num_participants", String(values.num_participants));
       fd.append("primary_name", values.primary_name);
@@ -108,9 +111,10 @@ export function BookingWizard() {
 
   return (
     <StepShell step={step} onBack={step > 0 ? () => setStep((s) => s - 1) : undefined}>
-      {step === 0 && <GroupStep form={form} onNext={() => setStep(1)} />}
-      {step === 1 && <RegistrationStep form={form} onNext={() => setStep(2)} />}
-      {step === 2 && (
+      {step === 0 && <ShowStep form={form} onNext={() => setStep(1)} />}
+      {step === 1 && <GroupStep form={form} onNext={() => setStep(2)} />}
+      {step === 2 && <RegistrationStep form={form} onNext={() => setStep(3)} />}
+      {step === 3 && (
         <PaymentStep
           form={form}
           screenshot={screenshot}

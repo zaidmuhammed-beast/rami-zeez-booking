@@ -68,10 +68,8 @@ export const EVENTS: SiteEvent[] = [
       "en-PK"
     )} solo · PKR ${PRICING.duo.toLocaleString("en-PK")} duo`,
     activities: ["🎨 Paint", "🎸 Jam", "🎲 Games", "☕ Free coffee"],
-    status: "booking_open",
+    status: "completed",
     accent: "from-hue-pink via-hue-yellow to-hue-sky",
-    bookHref: "/book",
-    showSlots: true,
   },
   {
     slug: "screening",
@@ -84,9 +82,14 @@ export const EVENTS: SiteEvent[] = [
     dateLabel: "24th October 2026",
     timeLabel: "3:00 PM & 6:00 PM",
     locationLabel: "Bahria Town",
+    priceLabel: `PKR ${PRICING.single.toLocaleString(
+      "en-PK"
+    )} solo · PKR ${PRICING.duo.toLocaleString("en-PK")} duo`,
     activities: ["🎬 Awarapan 2", "🕒 3:00 PM show", "🕕 6:00 PM show"],
-    status: "announced",
+    status: "booking_open",
     accent: "from-hue-sky to-rz-purple-400",
+    bookHref: "/book",
+    showSlots: true,
   },
   {
     slug: "live-theater",

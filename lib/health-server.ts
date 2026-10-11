@@ -76,6 +76,34 @@ export async function checkTables(): Promise<TableCheck[]> {
   );
 }
 
+/**
+ * Columns the app writes that arrived in a later migration. A missing one
+ * fails every booking, so it's worth naming separately from the table.
+ */
+export async function checkBookingColumns(): Promise<TableCheck[]> {
+  if (!isSupabaseAdminConfigured || !supabaseAdmin) return [];
+  const db = supabaseAdmin;
+
+  const columns = [
+    { column: "show_time", migration: "supabase/show_time_migration.sql" },
+  ];
+
+  return Promise.all(
+    columns.map(async ({ column, migration }) => {
+      const { error } = await db.from("bookings").select(column).limit(1);
+      return {
+        table: `bookings.${column}`,
+        label: `Bookings — ${column} column`,
+        migration,
+        ok: !error,
+        rows: null,
+        code: error?.code || null,
+        message: error?.message || null,
+      };
+    })
+  );
+}
+
 export type BucketCheck = {
   ok: boolean;
   message: string;
@@ -109,7 +137,8 @@ export function explain(check: TableCheck): string | null {
     case "PGRST205":
       return `The table doesn't exist. Run ${check.migration} in the Supabase SQL editor.`;
     case "PGRST204":
-      return `The table exists but a column is missing. Re-run ${check.migration}.`;
+    case "42703":
+      return `A column is missing. Run ${check.migration} in the Supabase SQL editor.`;
     case "42501":
       return "Permission denied — check you're using the service role key, not the anon key.";
     default:

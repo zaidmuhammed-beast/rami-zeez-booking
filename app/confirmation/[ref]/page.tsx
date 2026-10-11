@@ -5,7 +5,7 @@ import { getBookingByRef } from "@/lib/bookings-server";
 import { generateQrDataUrl } from "@/lib/qr";
 import { daysUntil } from "@/lib/countdown";
 import { customerToBusinessLink } from "@/lib/whatsapp";
-import { EVENT } from "@/lib/constants";
+import { EVENT, showTimeLabel } from "@/lib/constants";
 import { formatPkr } from "@/lib/format";
 import { getEarnedBadges } from "@/lib/badges";
 import { getSiteOrigin } from "@/lib/site-url";
@@ -80,8 +80,10 @@ export default async function ConfirmationPage({
             <span className="font-semibold">{EVENT.dateLabel}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-rz-cream/60">⏰ Time</span>
-            <span className="font-semibold">{EVENT.timeLabel}</span>
+            <span className="text-rz-cream/60">⏰ Your show</span>
+            <span className="font-semibold">
+              {showTimeLabel(booking.show_time)}
+            </span>
           </div>
           <div className="flex justify-between">
             <span className="text-rz-cream/60">🎟 Ticket Type</span>
@@ -113,7 +115,7 @@ export default async function ConfirmationPage({
           <li>😎 Your Selection</li>
         </ul>
         <p className="mt-4 text-xs text-rz-cream/50">
-          📍 Venue details will be shared shortly before the event.
+          📍 {EVENT.locationLabel} — exact directions shared before the show.
         </p>
       </GlassCard>
 

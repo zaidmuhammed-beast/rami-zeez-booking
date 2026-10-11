@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
-import { getSlotAvailability } from "@/lib/slots";
+import { getSlotAvailability, getShowAvailability } from "@/lib/slots";
 
 export async function GET() {
-  const availability = await getSlotAvailability();
-  return NextResponse.json(availability);
+  const [availability, shows] = await Promise.all([
+    getSlotAvailability(),
+    getShowAvailability(),
+  ]);
+  return NextResponse.json({ ...availability, shows });
 }

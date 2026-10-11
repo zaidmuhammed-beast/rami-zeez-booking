@@ -9,6 +9,7 @@ export interface Booking {
   booking_ref: string;
   group_type: GroupType;
   num_participants: number;
+  show_time: string | null;
   primary_name: string;
   primary_phone: string;
   primary_whatsapp: string;
@@ -44,6 +45,7 @@ export interface Booking {
 export interface CreateBookingPayload {
   group_type: GroupType;
   num_participants: number;
+  show_time: string;
   primary_name: string;
   primary_phone: string;
   primary_whatsapp: string;

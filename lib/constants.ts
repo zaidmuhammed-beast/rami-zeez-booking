@@ -1,27 +1,57 @@
 export const EVENT = {
   brand: "Rami ZeeZ",
-  name: "HUE & YOU 1.0",
-  tagline: "Paint & Connect",
-  date: "2026-09-20",
-  dateLabel: "20th September 2026",
-  dateShort: "20 Sep",
-  // 4:00 PM Pakistan Standard Time — used by the live countdown.
-  startsAt: "2026-09-20T16:00:00+05:00",
-  timeLabel: "4:00 PM – 7:00 PM",
-  locationLabel: "Revealed soon",
-  totalSlots: 50,
+  name: "Awarapan 2 Screening",
+  tagline: "Big screen, good company",
+  date: "2026-10-24",
+  dateLabel: "24th October 2026",
+  dateShort: "24 Oct",
+  // First show, 3:00 PM Pakistan Standard Time — used by the live countdown.
+  startsAt: "2026-10-24T15:00:00+05:00",
+  timeLabel: "3:00 PM & 6:00 PM",
+  locationLabel: "Bahria Town",
+  // Two shows, two spaces of 10 seats each: 20 a show, 40 across the day.
+  totalSlots: 40,
   // Bookings made before this date earn the Early Bird badge — adjust as needed.
-  earlyBirdCutoff: "2026-09-13",
+  earlyBirdCutoff: "2026-10-18",
   whatsappBusinessNumber:
     process.env.NEXT_PUBLIC_WHATSAPP_BUSINESS_NUMBER || "923397777234",
   whatsappBusinessDisplay: "+92 339 7777 234",
 };
 
+/** Guests pick one of these at booking. Capacity is enforced per show. */
+export const SHOW_TIMES = [
+  {
+    id: "3pm",
+    label: "3:00 PM",
+    emoji: "🕒",
+    note: "Afternoon show",
+    capacity: 20,
+  },
+  {
+    id: "6pm",
+    label: "6:00 PM",
+    emoji: "🕕",
+    note: "Evening show",
+    capacity: 20,
+  },
+] as const;
+
+export type ShowTimeId = (typeof SHOW_TIMES)[number]["id"];
+
+export const SHOW_TIME_IDS = SHOW_TIMES.map((s) => s.id) as [
+  ShowTimeId,
+  ...ShowTimeId[],
+];
+
+export function showTimeLabel(id: string | null | undefined) {
+  return SHOW_TIMES.find((s) => s.id === id)?.label ?? "—";
+}
+
 export const PRICING = {
-  single: 1399,
-  duo: 2499,
-  // A couple pass covers two people, same as a duo.
-  couple: 2499,
+  single: 1800,
+  duo: 3400,
+  // A couple pass covers two seats, same as a duo.
+  couple: 3400,
 };
 
 export type GroupType = "single" | "duo" | "couple";

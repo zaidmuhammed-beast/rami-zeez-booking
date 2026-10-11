@@ -7,6 +7,7 @@ import {
 import { bookingFormSchema } from "@/lib/booking-schema";
 import { computeTicket } from "@/lib/pricing";
 import { generateBookingRef, generateReferralCode } from "@/lib/generate-ref";
+import { canSeat } from "@/lib/slots";
 
 const MAX_SCREENSHOT_BYTES = 8 * 1024 * 1024;
 
@@ -40,6 +41,7 @@ export async function POST(request: Request) {
   const buddyAgeStr = getStr("buddy_age");
 
   const raw = {
+    show_time: getStr("show_time"),
     group_type: getStr("group_type"),
     num_participants: Number(getStr("num_participants")) || 1,
     primary_name: getStr("primary_name"),
@@ -71,6 +73,12 @@ export async function POST(request: Request) {
 
   const data = parsed.data;
   const ticket = computeTicket(data.group_type, data.num_participants);
+
+  // Each show has its own capacity — check before taking a payment screenshot.
+  const seating = await canSeat(data.show_time, data.num_participants);
+  if (!seating.ok) {
+    return NextResponse.json({ error: seating.reason }, { status: 409 });
+  }
 
   const screenshot = formData.get("screenshot");
   if (!(screenshot instanceof File) || screenshot.size === 0) {
@@ -123,6 +131,7 @@ export async function POST(request: Request) {
 
   const { error: insertError } = await supabaseAdmin.from("bookings").insert({
     booking_ref: bookingRef,
+    show_time: data.show_time,
     group_type: data.group_type,
     num_participants: data.num_participants,
     primary_name: data.primary_name,

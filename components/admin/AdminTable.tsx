@@ -5,7 +5,7 @@ import type { Booking } from "@/lib/types";
 import { adminToCustomerLink } from "@/lib/whatsapp";
 import { formatPkr } from "@/lib/format";
 import { getEarnedBadges } from "@/lib/badges";
-import { BADGES } from "@/lib/constants";
+import { BADGES, showTimeLabel } from "@/lib/constants";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { BookingDetailModal } from "./BookingDetailModal";
 
@@ -88,6 +88,7 @@ export function AdminTable({ initialBookings }: AdminTableProps) {
           <thead>
             <tr className="text-left text-rz-cream/60 border-b border-white/10">
               <th className="px-4 py-3 font-medium">Name</th>
+              <th className="px-4 py-3 font-medium">Show</th>
               <th className="px-4 py-3 font-medium">Ticket</th>
               <th className="px-4 py-3 font-medium">Paid</th>
               <th className="px-4 py-3 font-medium">Coffee</th>
@@ -111,6 +112,11 @@ export function AdminTable({ initialBookings }: AdminTableProps) {
                     {b.booking_ref}
                     {b.partner_name ? ` · ${b.partner_name}` : ""}
                     {b.buddy_name ? ` · ${b.buddy_name}` : ""}
+                  </p>
+                </td>
+                <td className="px-4 py-3">
+                  <p className="font-semibold whitespace-nowrap">
+                    {showTimeLabel(b.show_time)}
                   </p>
                 </td>
                 <td className="px-4 py-3">

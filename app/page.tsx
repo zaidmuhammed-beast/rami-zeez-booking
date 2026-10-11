@@ -5,72 +5,40 @@ import { SlotProgress } from "@/components/ui/SlotProgress";
 import { PaintBackdrop } from "@/components/landing/PaintBackdrop";
 import { Countdown } from "@/components/landing/Countdown";
 import { FactCard } from "@/components/landing/FactCard";
-import { ActivityCard } from "@/components/landing/ActivityCard";
 import { TicketCard } from "@/components/landing/TicketCard";
 import { CookingHero } from "@/components/landing/CookingHero";
 import { EventTile } from "@/components/events/EventTile";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
-import { getSlotAvailability } from "@/lib/slots";
+import { getSlotAvailability, getShowAvailability } from "@/lib/slots";
 import { upcomingEvents, pastEvents } from "@/lib/events";
 import { EVENT, PRICING } from "@/lib/constants";
 import { businessChatLink } from "@/lib/whatsapp";
 
-// Keep the slot counter reasonably live without hitting Supabase on every visit.
+// Keep the seat counts reasonably live without hitting Supabase on every visit.
 export const revalidate = 30;
 
-const FACTS = [
-  { emoji: "📅", label: "Date", value: EVENT.dateLabel, note: "Sunday" },
-  { emoji: "⏰", label: "Time", value: EVENT.timeLabel, note: "3 hours of colour" },
-  {
-    emoji: "📍",
-    label: "Location",
-    value: EVENT.locationLabel,
-    note: "Dropping in your WhatsApp",
-  },
-  {
-    emoji: "🎟",
-    label: "Passes",
-    value: `From ${PRICING.single.toLocaleString("en-PK")} PKR`,
-    note: "Solo or duo",
-  },
-];
-
-const ACTIVITIES = [
-  {
-    emoji: "🎨",
-    title: "Paint",
-    description:
-      "Grab a canvas, pick your shade, and make something that is entirely yours. No skill required — messy is the point.",
-    accent: "from-hue-pink to-hue-coral",
-  },
-  {
-    emoji: "🎸",
-    title: "Jam",
-    description:
-      "Live music running through the evening. Sing along, take the mic, or just let the room carry you.",
-    accent: "from-hue-yellow to-hue-coral",
-  },
-  {
-    emoji: "🎲",
-    title: "Games",
-    description:
-      "Different games all evening, built to break the ice fast. You will know half the room by the second round.",
-    accent: "from-hue-mint to-hue-sky",
-  },
-];
-
 const MARQUEE_WORDS = [
-  "PAINT",
-  "JAM",
-  "GAMES",
-  "CONNECT",
-  "HUE & YOU 1.0",
-  "20 SEP 2026",
+  "AWARAPAN 2",
+  "BIG SCREEN",
+  "TWO SHOWS",
+  "BAHRIA TOWN",
+  "24 OCT 2026",
 ];
+
+/** Last word cool, the rest warm — reads as one wordmark for any event name. */
+function Wordmark({ name }: { name: string }) {
+  const words = name.split(" ");
+  const tail = words.pop();
+  return (
+    <>
+      {words.length > 0 && <span className="hue-text">{words.join(" ")} </span>}
+      <span className="hue-text-cool">{tail}</span>
+    </>
+  );
+}
 
 export default async function Home() {
-  const { taken, total } = await getSlotAvailability();
   const upcoming = upcomingEvents();
   const past = pastEvents();
   // Everything event-specific below hangs off this: with nothing on sale the
@@ -97,32 +65,11 @@ export default async function Home() {
           </section>
         )}
 
-        <section aria-hidden className="overflow-hidden py-4 border-y border-white/10 bg-white/[0.04]">
-          <div className="marquee-track">
-            {[0, 1].map((copy) => (
-              <div key={copy} className="flex shrink-0">
-                {MARQUEE_WORDS.map((word) => (
-                  <span
-                    key={`${copy}-${word}`}
-                    className="font-display font-extrabold text-lg sm:text-xl text-rz-cream/45 px-6 whitespace-nowrap"
-                  >
-                    {word}
-                    <span className="text-hue-pink"> ●</span>
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </section>
-
         {past.length > 0 && (
           <section className="mx-auto max-w-5xl px-6 py-12">
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-center">
               What we&apos;ve thrown
             </h2>
-            <p className="mt-3 text-center text-rz-cream/70">
-              A taste of what the next one will be like.
-            </p>
             <div className="mt-8 grid sm:grid-cols-2 gap-4">
               {past.map((event) => (
                 <EventTile key={event.slug} event={event} past />
@@ -141,8 +88,7 @@ export default async function Home() {
               Don&apos;t miss the next one 🔔
             </h2>
             <p className="text-rz-cream/75 mb-8">
-              Seats go fast and we announce here first. Message us and
-              you&apos;ll know before anyone else.
+              Seats go fast and we announce here first.
             </p>
             <a
               href={businessChatLink(
@@ -162,6 +108,22 @@ export default async function Home() {
     );
   }
 
+  const { taken, total } = await getSlotAvailability();
+  const shows = await getShowAvailability();
+  const allSoldOut = shows.every((s) => s.soldOut);
+
+  const facts = [
+    { emoji: "📅", label: "Date", value: onSale.dateLabel, note: "Saturday" },
+    { emoji: "⏰", label: "Shows", value: onSale.timeLabel, note: "Pick one" },
+    { emoji: "📍", label: "Location", value: onSale.locationLabel },
+    {
+      emoji: "🎟",
+      label: "Passes",
+      value: `From ${PRICING.single.toLocaleString("en-PK")} PKR`,
+      note: "Solo or duo",
+    },
+  ].filter((f): f is typeof f & { value: string } => Boolean(f.value));
+
   return (
     <div className="flex-1">
       <SiteHeader />
@@ -173,20 +135,15 @@ export default async function Home() {
         <div className="relative mx-auto max-w-6xl px-6 pt-14 pb-10 md:pt-20 md:pb-14 grid md:grid-cols-[1.05fr_0.95fr] gap-10 items-center">
           <div className="text-center md:text-left">
             <span className="chip mb-6">
-              🎨 {EVENT.brand} presents · Edition 1.0
+              {onSale.emoji} {EVENT.brand} presents
             </span>
 
-            <h1 className="font-display font-extrabold leading-[0.95] tracking-tight text-5xl sm:text-6xl md:text-7xl">
-              <span className="hue-text">HUE</span>
-              <span className="text-rz-cream/45"> &amp; </span>
-              <span className="hue-text-cool">YOU</span>
-              <span className="ml-3 align-super text-xl sm:text-2xl text-rz-cream/60">
-                1.0
-              </span>
+            <h1 className="font-display font-extrabold leading-[1.02] tracking-tight text-4xl sm:text-5xl md:text-6xl">
+              <Wordmark name={onSale.name} />
             </h1>
 
             <p className="mt-4 font-display text-xl sm:text-2xl font-bold text-rz-cream/90">
-              {EVENT.tagline}
+              {onSale.tagline}
             </p>
             <span
               aria-hidden
@@ -194,14 +151,12 @@ export default async function Home() {
             />
 
             <p className="mt-6 text-lg text-rz-cream/80 max-w-xl mx-auto md:mx-0">
-              One evening, a room full of canvases, live music and strangers who
-              don&apos;t stay strangers. Paint something, play something, leave
-              with people worth texting.
+              {onSale.description}
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
               <Link href="/book" className="btn-primary text-base">
-                🎟 Book Your Spot
+                {allSoldOut ? "🎟 Join the waitlist" : "🎟 Book Your Seat"}
               </Link>
               <a
                 href={businessChatLink()}
@@ -245,32 +200,63 @@ export default async function Home() {
       {/* ------------------------------------------------------- Event details */}
       <section className="mx-auto max-w-6xl px-6 py-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {FACTS.map((fact) => (
+          {facts.map((fact) => (
             <FactCard key={fact.label} {...fact} />
           ))}
         </div>
       </section>
 
-      {/* --------------------------------------------- Countdown + slots left */}
+      {/* ------------------------------------------------- Shows + countdown */}
       <section className="mx-auto max-w-6xl px-6 py-8 md:py-12">
         <div className="grid md:grid-cols-2 gap-5">
           <GlassCard className="p-6">
-            <p className="text-sm text-rz-cream/70 mb-3">
-              Brushes down in…
-            </p>
+            <p className="text-sm text-rz-cream/70 mb-3">Lights down in…</p>
             <Countdown target={EVENT.startsAt} />
           </GlassCard>
+
           <GlassCard className="p-6 flex flex-col justify-center">
             <SlotProgress taken={taken} total={total} />
             <p className="mt-3 text-xs text-rz-cream/55">
-              {`Only ${EVENT.totalSlots} seats — every canvas is spoken for once they're gone.`}
+              {`${total} seats across the day — ${shows[0]?.capacity ?? 0} a show.`}
             </p>
           </GlassCard>
+        </div>
+
+        <div className="mt-5 grid sm:grid-cols-2 gap-4">
+          {shows.map((show) => (
+            <GlassCard
+              key={show.id}
+              className={`p-6 flex items-center justify-between gap-4 ${
+                show.soldOut ? "opacity-60" : ""
+              }`}
+            >
+              <div>
+                <p className="font-display text-2xl font-extrabold">
+                  {show.emoji} {show.label}
+                </p>
+                <p className="text-sm text-rz-cream/60">{show.note}</p>
+              </div>
+              <span
+                className={`chip text-xs ${
+                  show.soldOut
+                    ? "text-rz-cream/50"
+                    : show.remaining <= 5
+                    ? "border-rz-amber-400/50 text-rz-amber-400"
+                    : "border-hue-mint/40 text-hue-mint"
+                }`}
+              >
+                {show.soldOut ? "Sold out" : `${show.remaining} seats left`}
+              </span>
+            </GlassCard>
+          ))}
         </div>
       </section>
 
       {/* ------------------------------------------------------------ Marquee */}
-      <section aria-hidden className="overflow-hidden py-4 border-y border-white/10 bg-white/[0.04]">
+      <section
+        aria-hidden
+        className="overflow-hidden py-4 border-y border-white/10 bg-white/[0.04]"
+      >
         <div className="marquee-track">
           {[0, 1].map((copy) => (
             <div key={copy} className="flex shrink-0">
@@ -288,52 +274,32 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* --------------------------------------------------------- Activities */}
-      <section className="mx-auto max-w-6xl px-6 py-12 md:py-16">
-        <h2 className="font-display text-2xl sm:text-3xl font-bold text-center">
-          What happens at HUE &amp; YOU
-        </h2>
-        <p className="mt-3 text-center text-rz-cream/70 max-w-xl mx-auto">
-          Three hours, three ways to lose track of time.
-        </p>
-
-        <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {ACTIVITIES.map((activity) => (
-            <ActivityCard key={activity.title} {...activity} />
-          ))}
-        </div>
-
-        <p className="mt-6 text-center text-sm text-rz-cream/60">
-          ☕ Every pass comes with a coffee on us. Non-negotiable.
-        </p>
-      </section>
-
       {/* ------------------------------------------------------------ Tickets */}
       <section id="tickets" className="mx-auto max-w-4xl px-6 py-12 md:py-16">
         <h2 className="font-display text-2xl sm:text-3xl font-bold text-center">
           Pick your pass
         </h2>
         <p className="mt-3 text-center text-rz-cream/70">
-          Come alone and leave with a crew, or bring your person along.
+          You choose your show — 3:00 PM or 6:00 PM — at checkout.
         </p>
 
         <div className="mt-10 grid sm:grid-cols-2 gap-5">
           <TicketCard
             emoji="👤"
             name="Solo"
-            seats="1 seat · 1 canvas"
+            seats="1 seat · 1 show"
             price={PRICING.single}
             accent="from-hue-sky to-hue-mint"
             perks={[
-              "Your own canvas and paints session",
-              "Jam session + all the games",
-              "Free coffee",
+              "Your seat at the show you pick",
+              "Awarapan 2 on the big screen",
+              `${EVENT.locationLabel}, ${EVENT.dateShort}`,
             ]}
           />
           <TicketCard
             emoji="👬"
             name="Duo"
-            seats="2 seats · 2 canvases"
+            seats="2 seats · same show"
             price={PRICING.duo}
             accent="from-hue-pink to-hue-yellow"
             highlight
@@ -341,9 +307,9 @@ export default async function Home() {
               "en-PK"
             )} against two solo passes`}
             perks={[
-              "Two canvases, side by side",
-              "Jam session + all the games",
-              "Free coffee for both of you",
+              "Two seats, side by side",
+              "Awarapan 2 on the big screen",
+              `${EVENT.locationLabel}, ${EVENT.dateShort}`,
             ]}
           />
         </div>
@@ -362,20 +328,21 @@ export default async function Home() {
             className="absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r from-hue-pink via-hue-yellow to-hue-sky"
           />
           <h2 className="font-display text-2xl sm:text-3xl font-bold mb-3">
-            Your colour is waiting. 🎨
+            {allSoldOut ? "Both shows are full 🙌" : "Grab your seat 🎬"}
           </h2>
           <p className="text-rz-cream/75 mb-8">
-            {EVENT.dateLabel} · {EVENT.timeLabel}. Location revealed soon —
-            book now and we&apos;ll send it straight to your WhatsApp.
+            {onSale.dateLabel} · {onSale.timeLabel} · {onSale.locationLabel}.
+            {allSoldOut
+              ? " Message us and we'll let you know if a seat frees up."
+              : ` Only ${total} seats, and they go in a day or two.`}
           </p>
           <Link href="/book" className="btn-primary text-base">
-            🎟 Book Your Spot
+            {allSoldOut ? "🎟 Join the waitlist" : "🎟 Book Your Seat"}
           </Link>
         </GlassCard>
       </section>
 
       <SiteFooter />
-
     </div>
   );
 }

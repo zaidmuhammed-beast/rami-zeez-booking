@@ -1,8 +1,9 @@
 import { z } from "zod";
-import { PAYMENT_METHODS } from "./constants";
+import { PAYMENT_METHODS, SHOW_TIME_IDS } from "./constants";
 
 export const bookingFormSchema = z
   .object({
+    show_time: z.enum(SHOW_TIME_IDS, { error: "Pick the show you want" }),
     group_type: z.enum(["single", "duo", "couple"]),
     num_participants: z.number().min(1).max(20),
     primary_name: z.string().trim().min(2, "Enter your full name"),

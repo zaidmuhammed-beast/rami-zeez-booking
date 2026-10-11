@@ -5,6 +5,7 @@ import {
   explain,
   runWriteTests,
   checkServiceKey,
+  checkBookingColumns,
 } from "@/lib/health-server";
 import { GlassCard } from "@/components/ui/GlassCard";
 
@@ -19,11 +20,13 @@ export default async function AdminHealthPage({
   const { write } = await searchParams;
   const runWrites = write === "1";
 
-  const [tables, bucket, writes] = await Promise.all([
+  const [baseTables, columns, bucket, writes] = await Promise.all([
     checkTables(),
+    checkBookingColumns(),
     checkBucket(),
     runWrites ? runWriteTests() : Promise.resolve([]),
   ]);
+  const tables = [...baseTables, ...columns];
   const broken = tables.filter((t) => !t.ok);
   const key = checkServiceKey();
 
