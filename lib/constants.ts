@@ -85,7 +85,6 @@ export const PAYMENT_METHODS = [
   "Bank Transfer",
   "Easypaisa",
   "JazzCash",
-  "Sadapay",
   "Nayapay",
 ] as const;
 

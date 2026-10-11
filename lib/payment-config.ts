@@ -1,5 +1,5 @@
-// TODO: fill in real account details before going live.
-// These are placeholders shown to guests on the Payment step.
+// Account details shown to guests on the Payment step.
+// The three wallets share one number; the bank account is separate.
 export const PAYMENT_ACCOUNTS: Record<
   string,
   { accountTitle: string; accountNumber: string; extra?: string }
@@ -10,19 +10,15 @@ export const PAYMENT_ACCOUNTS: Record<
     extra: "UBL",
   },
   Easypaisa: {
-    accountTitle: "N/A",
-    accountNumber: "N/A",
+    accountTitle: "Zaid Muhammad",
+    accountNumber: "0316 1240899",
   },
   JazzCash: {
-    accountTitle: "N/A",
-    accountNumber: "N/A",
-  },
-  Sadapay: {
-    accountTitle: "N/A",
-    accountNumber: "N/A",
+    accountTitle: "Zaid Muhammad",
+    accountNumber: "0316 1240899",
   },
   Nayapay: {
-    accountTitle: "N/A",
-    accountNumber: "N/A",
+    accountTitle: "Zaid Muhammad",
+    accountNumber: "0316 1240899",
   },
 };
