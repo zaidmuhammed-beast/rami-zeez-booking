@@ -10,15 +10,15 @@ export const PAYMENT_ACCOUNTS: Record<
     extra: "UBL",
   },
   Easypaisa: {
-    accountTitle: "Zaid Muhammad",
+    accountTitle: "Muhammad Ukasha",
     accountNumber: "0316 1240899",
   },
   JazzCash: {
-    accountTitle: "Zaid Muhammad",
+    accountTitle: "Muhammad Ukasha",
     accountNumber: "0316 1240899",
   },
   Nayapay: {
-    accountTitle: "Zaid Muhammad",
+    accountTitle: "Muhammad Ukasha",
     accountNumber: "0316 1240899",
   },
 };
