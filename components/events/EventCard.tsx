@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
-import { STATUS_LABEL, STATUS_STYLE, type SiteEvent } from "@/lib/events";
+import { statusLabel, STATUS_STYLE, type SiteEvent } from "@/lib/events";
 
 type EventCardProps = {
   event: SiteEvent;
@@ -42,7 +42,7 @@ export function EventCard({ event, past = false, slots }: EventCardProps) {
           <p className="font-display font-bold text-rz-cream/80">{event.tagline}</p>
         </div>
         <span className={`chip text-xs ${STATUS_STYLE[status]}`}>
-          {STATUS_LABEL[status]}
+          {statusLabel(event, past)}
         </span>
       </div>
 

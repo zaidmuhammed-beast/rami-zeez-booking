@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { STATUS_LABEL, STATUS_STYLE, type SiteEvent } from "@/lib/events";
+import { statusLabel, STATUS_STYLE, type SiteEvent } from "@/lib/events";
 
 type EventTileProps = {
   event: SiteEvent;
@@ -24,7 +24,7 @@ export function EventTile({ event, past = false }: EventTileProps) {
       <div className="flex items-start justify-between gap-3">
         <span className="text-3xl">{event.emoji}</span>
         <span className={`chip text-xs ${STATUS_STYLE[status]}`}>
-          {STATUS_LABEL[status]}
+          {statusLabel(event, past)}
         </span>
       </div>
 

@@ -8,7 +8,7 @@ import { PaintBackdrop } from "@/components/landing/PaintBackdrop";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { getSlotAvailability } from "@/lib/slots";
-import { EVENTS, getEvent, isPast, STATUS_LABEL, STATUS_STYLE } from "@/lib/events";
+import { EVENTS, getEvent, isPast, statusLabel, STATUS_STYLE } from "@/lib/events";
 import { EVENT } from "@/lib/constants";
 import { businessChatLink } from "@/lib/whatsapp";
 
@@ -72,7 +72,7 @@ export default async function EventDetailPage({
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <span className="text-4xl">{event.emoji}</span>
             <span className={`chip text-xs ${STATUS_STYLE[status]}`}>
-              {STATUS_LABEL[status]}
+              {statusLabel(event, past)}
             </span>
           </div>
 

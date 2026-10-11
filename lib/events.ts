@@ -76,12 +76,17 @@ export const EVENTS: SiteEvent[] = [
   {
     slug: "screening",
     emoji: "🎬",
-    name: "Screening",
+    name: "Awarapan 2 Screening",
     tagline: "Big screen, good company",
-    description: "A film night with the crowd that makes it worth watching.",
+    description:
+      "Awarapan 2 on the big screen in Bahria Town, with two shows to pick from. Come for the film, stay for the crowd watching it with you.",
+    date: "2026-10-24",
+    dateLabel: "24th October 2026",
+    timeLabel: "3:00 PM & 6:00 PM",
+    locationLabel: "Bahria Town",
+    activities: ["🎬 Awarapan 2", "🕒 3:00 PM show", "🕕 6:00 PM show"],
     status: "announced",
     accent: "from-hue-sky to-rz-purple-400",
-    detailsComingSoon: true,
   },
   {
     slug: "live-theater",
@@ -115,11 +120,18 @@ export const EVENTS: SiteEvent[] = [
   },
 ];
 
-export const STATUS_LABEL: Record<EventStatus, string> = {
+const STATUS_LABEL: Record<EventStatus, string> = {
   completed: "Wrapped",
   booking_open: "Booking open",
   announced: "Coming soon",
 };
+
+/** Dated-but-unbookable reads as "Tickets soon" rather than "Coming soon". */
+export function statusLabel(event: SiteEvent, past = false) {
+  if (past || event.status === "completed") return STATUS_LABEL.completed;
+  if (event.status === "announced" && event.date) return "Tickets soon";
+  return STATUS_LABEL[event.status];
+}
 
 export const STATUS_STYLE: Record<EventStatus, string> = {
   completed: "border-white/25 text-rz-cream/60",
