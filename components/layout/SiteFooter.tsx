@@ -26,6 +26,9 @@ export function SiteFooter() {
           <Link href="/about" className="hover:text-rz-cream transition">
             About
           </Link>
+          <Link href="/revolution" className="hover:text-rz-cream transition">
+            Revolution
+          </Link>
           <Link href="/brands" className="hover:text-rz-cream transition">
             For Brands
           </Link>

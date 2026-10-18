@@ -203,19 +203,22 @@ export default function AboutPage() {
           ))}
         </div>
 
-        <div className="mt-10 text-center">
+        <div className="mt-10 flex flex-col items-center gap-4">
+          <Link href="/revolution" className="btn-primary text-base">
+            ✊ Become Part Of Revolution
+          </Link>
+          <p className="text-sm text-rz-cream/65 max-w-md">
+            Ask for startup support — a cart, tools, materials, training — or
+            offer it. Open to anyone who needs a start.
+          </p>
           <a
             href={MOVEMENT.joinFormUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-primary text-base"
+            className="text-sm text-rz-cream/70 underline underline-offset-4 decoration-white/25 hover:text-rz-cream transition"
           >
-            🤝 Join the movement
+            Or apply to the justice team →
           </a>
-          <p className="mt-4 text-sm text-rz-cream/60 max-w-md mx-auto">
-            The form asks hard questions on purpose. It takes a while, and
-            it&apos;s meant to.
-          </p>
         </div>
       </section>
 

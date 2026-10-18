@@ -34,6 +34,12 @@ export default function AdminProtectedLayout({
               Ambassadors
             </Link>
             <Link
+              href="/admin/revolution"
+              className="rounded-full px-3 py-1.5 hover:bg-white/10 transition"
+            >
+              Revolution
+            </Link>
+            <Link
               href="/admin/health"
               className="rounded-full px-3 py-1.5 hover:bg-white/10 transition"
             >

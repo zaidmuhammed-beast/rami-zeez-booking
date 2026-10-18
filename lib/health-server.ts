@@ -23,6 +23,11 @@ const TABLES: { table: string; label: string; migration: string }[] = [
     label: "Ambassador applications",
     migration: "supabase/ambassadors_migration.sql",
   },
+  {
+    table: "revolution_members",
+    label: "Revolution submissions",
+    migration: "supabase/revolution_members_migration.sql",
+  },
 ];
 
 /** Reads each table the site writes to and reports exactly why any of them fail. */

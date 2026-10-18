@@ -107,3 +107,27 @@ export interface Ambassador {
   status: AmbassadorStatus;
   created_at: string;
 }
+
+export type RevolutionRole = "receive" | "provide" | "both";
+
+export type RevolutionStatus = "new" | "contacted" | "approved" | "declined";
+
+export interface RevolutionMember {
+  id: string;
+  full_name: string;
+  city: string;
+  phone: string;
+  whatsapp: string;
+  email: string | null;
+  age_range: string;
+  gender: string;
+  role: RevolutionRole;
+  support_type: string | null;
+  household_size: string | null;
+  household_income: string | null;
+  situation: string | null;
+  contributions: string[];
+  message: string | null;
+  status: RevolutionStatus;
+  created_at: string;
+}
