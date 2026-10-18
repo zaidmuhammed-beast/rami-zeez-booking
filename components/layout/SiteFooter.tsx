@@ -16,12 +16,15 @@ export function SiteFooter() {
           </span>
           {next ? ` · Next up: ${next.name}` : ""}
         </p>
-        <nav className="flex items-center gap-5">
+        <nav className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
           <Link href="/" className="hover:text-rz-cream transition">
             Home
           </Link>
           <Link href="/events" className="hover:text-rz-cream transition">
             Upcoming Events
+          </Link>
+          <Link href="/about" className="hover:text-rz-cream transition">
+            About
           </Link>
           <Link href="/brands" className="hover:text-rz-cream transition">
             For Brands

@@ -9,6 +9,7 @@ import { upcomingEvents } from "@/lib/events";
 const LINKS = [
   { href: "/", label: "Home" },
   { href: "/events", label: "Upcoming Events" },
+  { href: "/about", label: "About" },
   { href: "/brands", label: "For Brands" },
   { href: "/ambassadors", label: "Ambassadors" },
 ];
