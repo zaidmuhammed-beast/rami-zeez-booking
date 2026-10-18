@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { EVENT } from "@/lib/constants";
+import { ServiceWorkerRegistrar } from "@/components/pwa/ServiceWorkerRegistrar";
 import "./globals.css";
 
 // Self-hosted rather than fetched from Google at build time: a blip on
@@ -34,6 +35,20 @@ export const metadata: Metadata = {
     description,
     type: "website",
   },
+  applicationName: EVENT.brand,
+  icons: {
+    icon: [
+      { url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: "/icons/apple-touch-icon.png",
+  },
+  // Lets iOS run it full-screen from the home screen.
+  appleWebApp: {
+    capable: true,
+    title: EVENT.brand,
+    statusBarStyle: "black-translucent",
+  },
 };
 
 export const viewport: Viewport = {
@@ -54,6 +69,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col overflow-x-hidden">
         {children}
+        <ServiceWorkerRegistrar />
       </body>
     </html>
   );
