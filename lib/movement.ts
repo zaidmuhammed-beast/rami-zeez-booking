@@ -9,8 +9,6 @@
 export const MOVEMENT = {
   name: "Ashraful Makhluqat",
   meaning: "the best of creation",
-  joinFormUrl:
-    "https://docs.google.com/forms/d/1kodcI9UHJ7XLETSe3zf0HoWyUvwjGj6bWF3qd2cPE6I/viewform",
   /** Verbatim from the joining form. */
   statement:
     "We are not protesters. We are a movement of serious people — lawyers, students, officers, and parents — united to build a system where no one stands alone against injustice.",

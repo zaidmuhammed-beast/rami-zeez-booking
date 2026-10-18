@@ -211,14 +211,6 @@ export default function AboutPage() {
             Ask for startup support — a cart, tools, materials, training — or
             offer it. Open to anyone who needs a start.
           </p>
-          <a
-            href={MOVEMENT.joinFormUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-rz-cream/70 underline underline-offset-4 decoration-white/25 hover:text-rz-cream transition"
-          >
-            Or apply to the justice team →
-          </a>
         </div>
       </section>
 
