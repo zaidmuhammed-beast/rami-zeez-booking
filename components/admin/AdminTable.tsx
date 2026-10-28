@@ -5,7 +5,7 @@ import type { Booking } from "@/lib/types";
 import { adminToCustomerLink } from "@/lib/whatsapp";
 import { formatPkr } from "@/lib/format";
 import { getEarnedBadges } from "@/lib/badges";
-import { BADGES, showTimeLabel } from "@/lib/constants";
+import { BADGES, showTimeLabel, showFilm } from "@/lib/constants";
 import { GlassCard } from "@/components/ui/GlassCard";
 import { BookingDetailModal } from "./BookingDetailModal";
 
@@ -118,6 +118,7 @@ export function AdminTable({ initialBookings }: AdminTableProps) {
                   <p className="font-semibold whitespace-nowrap">
                     {showTimeLabel(b.show_time)}
                   </p>
+                  <p className="text-xs text-rz-cream/50">{showFilm(b.show_time)}</p>
                 </td>
                 <td className="px-4 py-3">
                   <p>{b.ticket_type}</p>

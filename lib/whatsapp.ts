@@ -1,4 +1,4 @@
-import { EVENT, showTimeLabel } from "./constants";
+import { EVENT, showTimeFull } from "./constants";
 import type { Booking } from "./types";
 
 function toWaNumber(raw: string) {
@@ -14,7 +14,7 @@ export function buildWaLink(phone: string, message: string) {
 export function customerToBusinessLink(
   booking: Pick<Booking, "booking_ref" | "primary_name" | "ticket_type" | "show_time">
 ) {
-  const message = `Hi ${EVENT.brand}! 👋 I just booked my spot for ${EVENT.name}.\n\nName: ${booking.primary_name}\nBooking Ref: ${booking.booking_ref}\nShow: ${showTimeLabel(booking.show_time)}\nTicket: ${booking.ticket_type}\n\nHere's my payment screenshot for confirmation!`;
+  const message = `Hi ${EVENT.brand}! 👋 I just booked my spot for ${EVENT.name}.\n\nName: ${booking.primary_name}\nBooking Ref: ${booking.booking_ref}\nShow: ${showTimeFull(booking.show_time)}\nTicket: ${booking.ticket_type}\n\nHere's my payment screenshot for confirmation!`;
   return buildWaLink(EVENT.whatsappBusinessNumber, message);
 }
 
@@ -23,7 +23,7 @@ export function confirmationTemplate(booking: Booking) {
 
 Your booking has been confirmed.
 📅 Date: ${EVENT.dateLabel}
-⏰ Your show: ${showTimeLabel(booking.show_time)}
+⏰ Your show: ${showTimeFull(booking.show_time)}
 📍 Venue: ${EVENT.locationLabel}
 🎟 Ticket Type: ${booking.ticket_type}
 ☕ Your free coffee is reserved!

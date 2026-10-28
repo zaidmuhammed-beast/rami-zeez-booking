@@ -20,10 +20,10 @@ export const revalidate = 30;
 
 const MARQUEE_WORDS = [
   "AWARAPAN 2",
-  "BIG SCREEN",
+  "SPIDER-MAN",
   "TWO SHOWS",
   "BAHRIA TOWN",
-  "24 OCT 2026",
+  "1 NOV 2026",
 ];
 
 /** Last word cool, the rest warm — reads as one wordmark for any event name. */
@@ -113,8 +113,8 @@ export default async function Home() {
   const allSoldOut = shows.every((s) => s.soldOut);
 
   const facts = [
-    { emoji: "📅", label: "Date", value: onSale.dateLabel, note: "Saturday" },
-    { emoji: "⏰", label: "Shows", value: onSale.timeLabel, note: "Pick one" },
+    { emoji: "📅", label: "Date", value: onSale.dateLabel, note: "Sunday" },
+    { emoji: "⏰", label: "Shows", value: onSale.timeLabel, note: "Two films" },
     { emoji: "📍", label: "Location", value: onSale.locationLabel },
     {
       emoji: "🎟",
@@ -230,11 +230,13 @@ export default async function Home() {
                 show.soldOut ? "opacity-60" : ""
               }`}
             >
-              <div>
-                <p className="font-display text-2xl font-extrabold">
-                  {show.emoji} {show.label}
+              <div className="min-w-0">
+                <p className="font-display text-xl font-extrabold leading-tight">
+                  {show.emoji} {show.film}
                 </p>
-                <p className="text-sm text-rz-cream/60">{show.note}</p>
+                <p className="text-sm text-rz-cream/70 mt-1">
+                  {show.label} · {show.note}
+                </p>
               </div>
               <span
                 className={`chip text-xs ${
@@ -280,7 +282,8 @@ export default async function Home() {
           Pick your pass
         </h2>
         <p className="mt-3 text-center text-rz-cream/70">
-          You choose your show — 3:00 PM or 6:00 PM — at checkout.
+          You choose your film — Awarapan 2 at 3:00 PM, or Spider-Man at 6:00
+          PM — at checkout.
         </p>
 
         <div className="mt-10 grid sm:grid-cols-2 gap-5">
@@ -291,8 +294,8 @@ export default async function Home() {
             price={PRICING.single}
             accent="from-hue-sky to-hue-mint"
             perks={[
-              "Your seat at the show you pick",
-              "Awarapan 2 on the big screen",
+              "Your seat at the film you pick",
+              "Awarapan 2 or Spider-Man on the big screen",
               `${EVENT.locationLabel}, ${EVENT.dateShort}`,
             ]}
           />
@@ -308,7 +311,7 @@ export default async function Home() {
             )} against two solo passes`}
             perks={[
               "Two seats, side by side",
-              "Awarapan 2 on the big screen",
+              "Awarapan 2 or Spider-Man on the big screen",
               `${EVENT.locationLabel}, ${EVENT.dateShort}`,
             ]}
           />

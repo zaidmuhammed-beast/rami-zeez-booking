@@ -5,7 +5,7 @@ import { getBookingByRef } from "@/lib/bookings-server";
 import { generateQrDataUrl } from "@/lib/qr";
 import { daysUntil } from "@/lib/countdown";
 import { customerToBusinessLink } from "@/lib/whatsapp";
-import { EVENT, showTimeLabel } from "@/lib/constants";
+import { EVENT, showTimeFull } from "@/lib/constants";
 import { formatPkr } from "@/lib/format";
 import { getEarnedBadges } from "@/lib/badges";
 import { getSiteOrigin } from "@/lib/site-url";
@@ -81,8 +81,8 @@ export default async function ConfirmationPage({
           </div>
           <div className="flex justify-between">
             <span className="text-rz-cream/60">⏰ Your show</span>
-            <span className="font-semibold">
-              {showTimeLabel(booking.show_time)}
+            <span className="font-semibold text-right">
+              {showTimeFull(booking.show_time)}
             </span>
           </div>
           <div className="flex justify-between">

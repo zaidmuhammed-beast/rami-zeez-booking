@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import type { Booking } from "@/lib/types";
-import { FUN_QUESTIONS, showTimeLabel } from "@/lib/constants";
+import { FUN_QUESTIONS, showTimeFull } from "@/lib/constants";
 import { formatPkr } from "@/lib/format";
 import { GlassCard } from "@/components/ui/GlassCard";
 
@@ -83,7 +83,7 @@ export function BookingDetailModal({ booking, onClose }: BookingDetailModalProps
               <Field label="Phone" value={booking.primary_phone} />
               <Field label="WhatsApp" value={booking.primary_whatsapp} />
               <Field label="Instagram" value={booking.primary_instagram} />
-              <Field label="Show" value={showTimeLabel(booking.show_time)} />
+              <Field label="Show" value={showTimeFull(booking.show_time)} />
               <Field label="Group Type" value={booking.group_type} />
               <Field label="Participants" value={booking.num_participants} />
             </div>

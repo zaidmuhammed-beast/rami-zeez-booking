@@ -1,4 +1,4 @@
-import { EVENT, PRICING } from "./constants";
+import { EVENT, PRICING, SHOW_TIMES } from "./constants";
 
 export type EventStatus = "completed" | "booking_open" | "announced";
 
@@ -74,18 +74,18 @@ export const EVENTS: SiteEvent[] = [
   {
     slug: "screening",
     emoji: "🎬",
-    name: "Awarapan 2 Screening",
-    tagline: "Big screen, good company",
+    name: EVENT.name,
+    tagline: EVENT.tagline,
     description:
-      "Awarapan 2 on the big screen in Bahria Town, with two shows to pick from. Come for the film, stay for the crowd watching it with you.",
-    date: "2026-10-24",
-    dateLabel: "24th October 2026",
-    timeLabel: "3:00 PM & 6:00 PM",
-    locationLabel: "Bahria Town",
+      "Two films on the big screen in Bahria Town, one afternoon apart. Awarapan 2 at 3, Spider-Man: Brand New Day at 6 — book whichever one you're here for.",
+    date: EVENT.date,
+    dateLabel: EVENT.dateLabel,
+    timeLabel: EVENT.timeLabel,
+    locationLabel: EVENT.locationLabel,
     priceLabel: `PKR ${PRICING.single.toLocaleString(
       "en-PK"
     )} solo · PKR ${PRICING.duo.toLocaleString("en-PK")} duo`,
-    activities: ["🎬 Awarapan 2", "🕒 3:00 PM show", "🕕 6:00 PM show"],
+    activities: SHOW_TIMES.map((s) => `${s.emoji} ${s.label} · ${s.film}`),
     status: "booking_open",
     accent: "from-hue-sky to-rz-purple-400",
     bookHref: "/book",

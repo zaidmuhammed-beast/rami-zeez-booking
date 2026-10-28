@@ -1,18 +1,18 @@
 export const EVENT = {
   brand: "Rami ZeeZ",
-  name: "Awarapan 2 Screening",
-  tagline: "Big screen, good company",
-  date: "2026-10-24",
-  dateLabel: "24th October 2026",
-  dateShort: "24 Oct",
+  name: "Movie Night",
+  tagline: "Two films, two shows",
+  date: "2026-11-01",
+  dateLabel: "1st November 2026",
+  dateShort: "1 Nov",
   // First show, 3:00 PM Pakistan Standard Time — used by the live countdown.
-  startsAt: "2026-10-24T15:00:00+05:00",
+  startsAt: "2026-11-01T15:00:00+05:00",
   timeLabel: "3:00 PM & 6:00 PM",
   locationLabel: "Bahria Town",
   // Two shows, two spaces of 10 seats each: 20 a show, 40 across the day.
   totalSlots: 40,
   // Bookings made before this date earn the Early Bird badge — adjust as needed.
-  earlyBirdCutoff: "2026-10-18",
+  earlyBirdCutoff: "2026-10-30",
   whatsappBusinessNumber:
     process.env.NEXT_PUBLIC_WHATSAPP_BUSINESS_NUMBER || "923397777234",
   whatsappBusinessDisplay: "+92 339 7777 234",
@@ -24,6 +24,7 @@ export const SHOW_TIMES = [
     id: "3pm",
     label: "3:00 PM",
     emoji: "🕒",
+    film: "Awarapan 2",
     note: "Afternoon show",
     capacity: 20,
   },
@@ -31,6 +32,7 @@ export const SHOW_TIMES = [
     id: "6pm",
     label: "6:00 PM",
     emoji: "🕕",
+    film: "Spider-Man: Brand New Day",
     note: "Evening show",
     capacity: 20,
   },
@@ -45,6 +47,16 @@ export const SHOW_TIME_IDS = SHOW_TIMES.map((s) => s.id) as [
 
 export function showTimeLabel(id: string | null | undefined) {
   return SHOW_TIMES.find((s) => s.id === id)?.label ?? "—";
+}
+
+/** "3:00 PM · Awarapan 2" — for confirmations, WhatsApp and the admin table. */
+export function showTimeFull(id: string | null | undefined) {
+  const show = SHOW_TIMES.find((s) => s.id === id);
+  return show ? `${show.label} · ${show.film}` : "—";
+}
+
+export function showFilm(id: string | null | undefined) {
+  return SHOW_TIMES.find((s) => s.id === id)?.film ?? "";
 }
 
 export const PRICING = {

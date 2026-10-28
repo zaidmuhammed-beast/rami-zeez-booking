@@ -41,7 +41,7 @@ export function ShowStep({ form, onNext }: ShowStepProps) {
         Which show?
       </h2>
       <p className="text-center text-rz-cream/70 mb-6">
-        {EVENT.dateLabel} · {EVENT.locationLabel}. Two sittings — pick one.
+        {EVENT.dateLabel} · {EVENT.locationLabel}. Two films — pick your show.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -65,7 +65,12 @@ export function ShowStep({ form, onNext }: ShowStepProps) {
               }`}
             >
               <span className="text-3xl">{show.emoji}</span>
-              <span className="font-display text-xl font-bold">{show.label}</span>
+              <span className="font-display text-lg font-bold leading-tight">
+                {show.film}
+              </span>
+              <span className="font-display text-xl font-extrabold text-rz-amber-400">
+                {show.label}
+              </span>
               <span className="text-xs text-rz-cream/60">{show.note}</span>
 
               {live ? (
@@ -94,7 +99,8 @@ export function ShowStep({ form, onNext }: ShowStepProps) {
 
       {pickedShow && !pickedShow.soldOut && pickedShow.remaining <= 5 && (
         <p className="mt-4 text-center text-sm text-rz-amber-400">
-          🔥 Only {pickedShow.remaining} left for the {pickedShow.label} show.
+          🔥 Only {pickedShow.remaining} left for {pickedShow.film} at{" "}
+          {pickedShow.label}.
         </p>
       )}
 

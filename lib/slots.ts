@@ -7,6 +7,7 @@ export type ShowAvailability = {
   id: ShowTimeId;
   label: string;
   emoji: string;
+  film: string;
   note: string;
   capacity: number;
   taken: number;
@@ -49,6 +50,7 @@ export async function getShowAvailability(): Promise<ShowAvailability[]> {
       id: show.id,
       label: show.label,
       emoji: show.emoji,
+      film: show.film,
       note: show.note,
       capacity: show.capacity,
       taken,
@@ -68,8 +70,8 @@ export async function canSeat(showTime: string, seats: number) {
       ok: false as const,
       reason:
         show.remaining === 0
-          ? `The ${show.label} show is sold out. Please pick the other one.`
-          : `Only ${show.remaining} seat${show.remaining === 1 ? "" : "s"} left for the ${show.label} show.`,
+          ? `${show.film} at ${show.label} is sold out. Please pick the other show.`
+          : `Only ${show.remaining} seat${show.remaining === 1 ? "" : "s"} left for ${show.film} at ${show.label}.`,
     };
   }
   return { ok: true as const };
