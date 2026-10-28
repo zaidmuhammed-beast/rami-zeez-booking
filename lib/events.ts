@@ -56,17 +56,15 @@ export const EVENTS: SiteEvent[] = [
   {
     slug: "hue-and-you-1",
     emoji: "🎨",
-    name: EVENT.name,
-    tagline: EVENT.tagline,
+    // Its own details, not EVENT's — EVENT always points at what's on sale now.
+    name: "HUE & YOU 1.0",
+    tagline: "Paint & Connect",
     description:
       "One evening, a room full of canvases, live music and strangers who don't stay strangers. Paint something, play something, leave with people worth texting.",
-    date: EVENT.date,
-    dateLabel: EVENT.dateLabel,
-    timeLabel: EVENT.timeLabel,
-    locationLabel: EVENT.locationLabel,
-    priceLabel: `PKR ${PRICING.single.toLocaleString(
-      "en-PK"
-    )} solo · PKR ${PRICING.duo.toLocaleString("en-PK")} duo`,
+    date: "2026-09-20",
+    dateLabel: "20th September 2026",
+    timeLabel: "4:00 PM – 7:00 PM",
+    priceLabel: "PKR 1,399 solo · PKR 2,499 duo",
     activities: ["🎨 Paint", "🎸 Jam", "🎲 Games", "☕ Free coffee"],
     status: "completed",
     accent: "from-hue-pink via-hue-yellow to-hue-sky",
