@@ -26,7 +26,7 @@ const MARQUEE_WORDS = [
   "RHINESTONES",
   "20 SEATS ONLY",
   "GO FLOUR GULBERG",
-  "22 NOV 2026",
+  "28 NOV 2026",
 ];
 
 const WHAT_HAPPENS = [
