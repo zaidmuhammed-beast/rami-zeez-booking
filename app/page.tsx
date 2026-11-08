@@ -52,10 +52,10 @@ const WHAT_HAPPENS = [
     accent: "from-hue-yellow to-hue-mint",
   },
   {
-    emoji: "📸",
-    title: "Take it home",
+    emoji: "☕",
+    title: "Eat, drink, sparkle",
     description:
-      "Whatever you bedazzle leaves with you at six, along with the photos of it.",
+      "Refreshments are on us at Go Flour, and whatever you bedazzle leaves with you at six.",
     accent: "from-hue-mint to-hue-sky",
   },
 ];
@@ -384,6 +384,7 @@ export default async function Home() {
             perks={[
               "Your seat at the table",
               "Stones, studs and the full how-to",
+              "Refreshments included",
               `${EVENT.locationLabel}, ${EVENT.dateShort}`,
             ]}
           />
@@ -407,6 +408,7 @@ export default async function Home() {
             perks={[
               "Two seats, one table",
               "Stones, studs and the full how-to",
+              "Refreshments for both",
               `${EVENT.locationLabel}, ${EVENT.dateShort}`,
             ]}
           />

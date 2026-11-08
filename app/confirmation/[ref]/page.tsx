@@ -93,6 +93,10 @@ export default async function ConfirmationPage({
             <span className="text-rz-cream/60">💰 Amount</span>
             <span className="font-semibold">{formatPkr(booking.amount)}</span>
           </div>
+          <div className="flex justify-between">
+            <span className="text-rz-cream/60">☕ Refreshments</span>
+            <span className="font-semibold">Included</span>
+          </div>
           {daysLeft > 0 && (
             <div className="flex justify-between">
               <span className="text-rz-cream/60">⏳ Countdown</span>

@@ -105,7 +105,12 @@ export const EVENTS: SiteEvent[] = [
         "en-PK"
       )} solo · PKR ${tier.duo.toLocaleString("en-PK")} duo`;
     },
-    activities: ["💎 Bedazzle", "🪡 Learn the technique", "🧑‍🤝‍🧑 Meet the room", "📸 Take it home"],
+    activities: [
+      "💎 Bedazzle",
+      "🪡 Learn the technique",
+      "🧑‍🤝‍🧑 Meet the room",
+      "☕ Refreshments",
+    ],
     status: "booking_open",
     accent: "from-hue-pink via-hue-sky to-hue-mint",
     bookHref: "/book",

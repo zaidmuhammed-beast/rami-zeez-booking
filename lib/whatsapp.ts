@@ -26,6 +26,7 @@ Your booking has been confirmed.
 ⏰ Time: ${showTimeLabel(booking.show_time)}
 📍 Venue: ${EVENT.locationLabel}
 🎟 Ticket Type: ${booking.ticket_type}
+☕ Refreshments: included
 
 Bring:
 ❤️ Your Partner (if applicable)
