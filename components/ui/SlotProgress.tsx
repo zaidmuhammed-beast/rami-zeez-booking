@@ -6,7 +6,7 @@ type SlotProgressProps = {
 export function SlotProgress({ taken, total }: SlotProgressProps) {
   const remaining = Math.max(0, total - taken);
   const pct = Math.min(100, Math.round((taken / total) * 100));
-  const almostFull = remaining <= 10;
+  const almostFull = remaining > 0 && remaining <= Math.max(3, Math.ceil(total * 0.25));
 
   return (
     <div>

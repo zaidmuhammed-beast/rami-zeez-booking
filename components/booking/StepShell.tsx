@@ -4,20 +4,26 @@ import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 import { GlassCard } from "@/components/ui/GlassCard";
 
-const STEP_LABELS = ["Show", "Vibe", "You", "Payment"];
-
 type StepShellProps = {
+  /** Index of the active step within `labels`. */
   step: number;
+  labels: string[];
   children: ReactNode;
   onBack?: () => void;
   footer?: ReactNode;
 };
 
-export function StepShell({ step, children, onBack, footer }: StepShellProps) {
+export function StepShell({
+  step,
+  labels,
+  children,
+  onBack,
+  footer,
+}: StepShellProps) {
   return (
     <div className="mx-auto max-w-2xl px-4 sm:px-6 py-10 md:py-16">
       <div className="flex items-center justify-center gap-2 mb-8">
-        {STEP_LABELS.map((label, i) => (
+        {labels.map((label, i) => (
           <div key={label} className="flex items-center gap-2">
             <div
               className={`flex items-center gap-2 rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
@@ -30,7 +36,7 @@ export function StepShell({ step, children, onBack, footer }: StepShellProps) {
             >
               {i < step ? "✓" : i + 1} <span className="hidden sm:inline">{label}</span>
             </div>
-            {i < STEP_LABELS.length - 1 && (
+            {i < labels.length - 1 && (
               <div className="h-px w-4 sm:w-8 bg-white/15" />
             )}
           </div>

@@ -1,4 +1,4 @@
-import { EVENT, PRICING, SHOW_TIMES } from "./constants";
+import { EVENT, pricing } from "./constants";
 
 export type EventStatus = "completed" | "booking_open" | "announced";
 
@@ -72,20 +72,42 @@ export const EVENTS: SiteEvent[] = [
   {
     slug: "screening",
     emoji: "🎬",
+    // Its own details, not EVENT's — EVENT always points at what's on sale now.
+    name: "Movie Night",
+    tagline: "Two films, two shows",
+    description:
+      "Two films on the big screen in Bahria Town, one afternoon apart: Awarapan 2 at 3, Spider-Man: Brand New Day at 6.",
+    date: "2026-11-01",
+    dateLabel: "1st November 2026",
+    timeLabel: "3:00 PM & 6:00 PM",
+    locationLabel: "Bahria Town",
+    priceLabel: "PKR 1,800 solo · PKR 3,400 duo",
+    activities: ["🕒 3:00 PM · Awarapan 2", "🕕 6:00 PM · Spider-Man: Brand New Day"],
+    status: "completed",
+    accent: "from-hue-sky to-rz-purple-400",
+  },
+  {
+    slug: "bedazzle-workshop",
+    emoji: "💎",
     name: EVENT.name,
     tagline: EVENT.tagline,
     description:
-      "Two films on the big screen in Bahria Town, one afternoon apart. Awarapan 2 at 3, Spider-Man: Brand New Day at 6 — book whichever one you're here for.",
+      "One long table, a pile of rhinestones, pearls and studs, and three hours to turn something plain into something that catches the light. Twenty seats, so the room stays small enough to actually talk.",
     date: EVENT.date,
     dateLabel: EVENT.dateLabel,
     timeLabel: EVENT.timeLabel,
     locationLabel: EVENT.locationLabel,
-    priceLabel: `PKR ${PRICING.single.toLocaleString(
-      "en-PK"
-    )} solo · PKR ${PRICING.duo.toLocaleString("en-PK")} duo`,
-    activities: SHOW_TIMES.map((s) => `${s.emoji} ${s.label} · ${s.film}`),
+    // A getter, so the price follows the early-bird cutoff instead of freezing
+    // at whatever it was when this module first loaded.
+    get priceLabel() {
+      const tier = pricing();
+      return `PKR ${tier.single.toLocaleString(
+        "en-PK"
+      )} solo · PKR ${tier.duo.toLocaleString("en-PK")} duo`;
+    },
+    activities: ["💎 Bedazzle", "🪡 Learn the technique", "🧑‍🤝‍🧑 Meet the room", "📸 Take it home"],
     status: "booking_open",
-    accent: "from-hue-sky to-rz-purple-400",
+    accent: "from-hue-pink via-hue-sky to-hue-mint",
     bookHref: "/book",
     showSlots: true,
   },

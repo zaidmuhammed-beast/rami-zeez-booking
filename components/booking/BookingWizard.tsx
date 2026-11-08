@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { bookingFormSchema, type BookingFormValues } from "@/lib/booking-schema";
+import { SINGLE_SESSION } from "@/lib/constants";
 import { computeTicket } from "@/lib/pricing";
 import { StepShell } from "./StepShell";
 import { ShowStep } from "./steps/ShowStep";
@@ -16,7 +17,12 @@ export function BookingWizard() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const referredByCode = searchParams.get("ref");
-  const [step, setStep] = useState(0);
+  // One session means nothing to pick: select it and start at the next step.
+  const firstStep = SINGLE_SESSION ? 1 : 0;
+  const stepLabels = SINGLE_SESSION
+    ? ["Vibe", "You", "Payment"]
+    : ["Session", "Vibe", "You", "Payment"];
+  const [step, setStep] = useState(firstStep);
   const [screenshot, setScreenshot] = useState<File | null>(null);
   const [screenshotError, setScreenshotError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -25,7 +31,8 @@ export function BookingWizard() {
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(bookingFormSchema),
     defaultValues: {
-      show_time: undefined as unknown as BookingFormValues["show_time"],
+      show_time: (SINGLE_SESSION?.id ??
+        undefined) as unknown as BookingFormValues["show_time"],
       group_type: undefined as unknown as BookingFormValues["group_type"],
       num_participants: 1,
       primary_name: "",
@@ -110,7 +117,11 @@ export function BookingWizard() {
   }
 
   return (
-    <StepShell step={step} onBack={step > 0 ? () => setStep((s) => s - 1) : undefined}>
+    <StepShell
+      step={step - firstStep}
+      labels={stepLabels}
+      onBack={step > firstStep ? () => setStep((s) => s - 1) : undefined}
+    >
       {step === 0 && <ShowStep form={form} onNext={() => setStep(1)} />}
       {step === 1 && <GroupStep form={form} onNext={() => setStep(2)} />}
       {step === 2 && <RegistrationStep form={form} onNext={() => setStep(3)} />}

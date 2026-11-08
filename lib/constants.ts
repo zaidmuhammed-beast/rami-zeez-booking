@@ -1,39 +1,38 @@
 export const EVENT = {
   brand: "Rami ZeeZ",
-  name: "Movie Night",
-  tagline: "Two films, two shows",
-  date: "2026-11-01",
-  dateLabel: "1st November 2026",
-  dateShort: "1 Nov",
-  // First show, 3:00 PM Pakistan Standard Time — used by the live countdown.
-  startsAt: "2026-11-01T15:00:00+05:00",
-  timeLabel: "3:00 PM & 6:00 PM",
-  locationLabel: "Bahria Town",
-  // Two shows, two spaces of 10 seats each: 20 a show, 40 across the day.
-  totalSlots: 40,
-  // Bookings made before this date earn the Early Bird badge — adjust as needed.
-  earlyBirdCutoff: "2026-10-30",
+  name: "Bedazzle Workshop",
+  tagline: "Bling & Connect",
+  date: "2026-11-22",
+  dateLabel: "22nd November 2026",
+  dateShort: "22 Nov",
+  dayLabel: "Sunday",
+  startsAt: "2026-11-22T15:00:00+05:00",
+  timeLabel: "3:00 PM – 6:00 PM",
+  locationLabel: "Go Flour, Gulberg",
+  // One session, one table: twenty seats for the day.
+  totalSlots: 20,
+  // Early-bird pricing runs to the end of 15 Nov in Pakistan. After that the
+  // regular price applies — enforced server-side, see lib/pricing.ts.
+  earlyBirdEndsAt: "2026-11-16T00:00:00+05:00",
+  earlyBirdLabel: "15th November",
+  earlyBirdShort: "15 Nov",
+  regularFromLabel: "16th November",
+  regularFromShort: "16 Nov",
   whatsappBusinessNumber:
     process.env.NEXT_PUBLIC_WHATSAPP_BUSINESS_NUMBER || "923397777234",
   whatsappBusinessDisplay: "+92 339 7777 234",
 };
 
-/** Guests pick one of these at booking. Capacity is enforced per show. */
+/**
+ * The sessions guests can book, each with its own capacity. There's only one
+ * this time, so the booking flow skips the picker and selects it for them.
+ */
 export const SHOW_TIMES = [
   {
-    id: "3pm",
-    label: "3:00 PM",
-    emoji: "🕒",
-    film: "Awarapan 2",
-    note: "Afternoon show",
-    capacity: 20,
-  },
-  {
-    id: "6pm",
-    label: "6:00 PM",
-    emoji: "🕕",
-    film: "Spider-Man: Brand New Day",
-    note: "Evening show",
+    id: "main",
+    label: "3:00 PM – 6:00 PM",
+    emoji: "💎",
+    note: "One session, 20 seats",
     capacity: 20,
   },
 ] as const;
@@ -45,26 +44,26 @@ export const SHOW_TIME_IDS = SHOW_TIMES.map((s) => s.id) as [
   ...ShowTimeId[],
 ];
 
+export const SINGLE_SESSION = SHOW_TIMES.length === 1 ? SHOW_TIMES[0] : null;
+
+/** Falls back to the stored value so bookings from past events still read. */
 export function showTimeLabel(id: string | null | undefined) {
-  return SHOW_TIMES.find((s) => s.id === id)?.label ?? "—";
+  return SHOW_TIMES.find((s) => s.id === id)?.label ?? id ?? "—";
 }
 
-/** "3:00 PM · Awarapan 2" — for confirmations, WhatsApp and the admin table. */
-export function showTimeFull(id: string | null | undefined) {
-  const show = SHOW_TIMES.find((s) => s.id === id);
-  return show ? `${show.label} · ${show.film}` : "—";
+export const PRICING_TIERS = {
+  earlyBird: { single: 1800, duo: 3400, couple: 3400 },
+  regular: { single: 2200, duo: 4200, couple: 4200 },
+} as const;
+
+export function isEarlyBird(at: Date | string | number = Date.now()) {
+  return new Date(at).getTime() < new Date(EVENT.earlyBirdEndsAt).getTime();
 }
 
-export function showFilm(id: string | null | undefined) {
-  return SHOW_TIMES.find((s) => s.id === id)?.film ?? "";
+/** Prices as they stand at `at` — early-bird before the cutoff, regular after. */
+export function pricing(at: Date | string | number = Date.now()) {
+  return isEarlyBird(at) ? PRICING_TIERS.earlyBird : PRICING_TIERS.regular;
 }
-
-export const PRICING = {
-  single: 1800,
-  duo: 3400,
-  // A couple pass covers two seats, same as a duo.
-  couple: 3400,
-};
 
 export type GroupType = "single" | "duo" | "couple";
 
@@ -110,7 +109,7 @@ export const RELATIONSHIP_DURATIONS = [
 export const BADGES = {
   earlyBird: { emoji: "💜", label: "Early Bird" },
   coffeeLover: { emoji: "☕", label: "Coffee Lover" },
-  jammer: { emoji: "🎸", label: "Jammer" },
+  bedazzler: { emoji: "💎", label: "Bedazzler" },
   coupleGoals: { emoji: "❤️", label: "Couple Goals" },
   quizChampion: { emoji: "👑", label: "Quiz Champion" },
 };

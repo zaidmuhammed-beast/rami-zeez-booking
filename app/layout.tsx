@@ -25,7 +25,7 @@ const displayFont = localFont({
   fallback: ["system-ui", "Arial", "sans-serif"],
 });
 
-const description = `${EVENT.tagline} — ${EVENT.dateLabel}, ${EVENT.timeLabel}. Paint, jam and play your way through an evening built for meeting people. Book your spot with ${EVENT.brand}.`;
+const description = `${EVENT.tagline} — ${EVENT.dateLabel}, ${EVENT.timeLabel} at ${EVENT.locationLabel}. ${EVENT.totalSlots} seats, three hours of rhinestones and good company. Book your spot with ${EVENT.brand}.`;
 
 export const metadata: Metadata = {
   title: `${EVENT.name} — ${EVENT.tagline} | ${EVENT.brand}`,

@@ -6,11 +6,14 @@ export type BadgeKey = keyof typeof BADGES;
 export function getEarnedBadges(booking: Booking): BadgeKey[] {
   const earned: BadgeKey[] = [];
 
-  if (new Date(booking.created_at).getTime() < new Date(EVENT.earlyBirdCutoff).getTime()) {
+  if (
+    new Date(booking.created_at).getTime() <
+    new Date(EVENT.earlyBirdEndsAt).getTime()
+  ) {
     earned.push("earlyBird");
   }
   if (booking.coffee_claimed) earned.push("coffeeLover");
-  earned.push("jammer");
+  earned.push("bedazzler");
   if (booking.group_type === "couple") earned.push("coupleGoals");
   if (booking.badges?.includes("quizChampion")) earned.push("quizChampion");
 

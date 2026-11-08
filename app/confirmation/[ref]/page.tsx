@@ -5,7 +5,7 @@ import { getBookingByRef } from "@/lib/bookings-server";
 import { generateQrDataUrl } from "@/lib/qr";
 import { daysUntil } from "@/lib/countdown";
 import { customerToBusinessLink } from "@/lib/whatsapp";
-import { EVENT, showTimeFull } from "@/lib/constants";
+import { EVENT, showTimeLabel } from "@/lib/constants";
 import { formatPkr } from "@/lib/format";
 import { getEarnedBadges } from "@/lib/badges";
 import { getSiteOrigin } from "@/lib/site-url";
@@ -80,9 +80,9 @@ export default async function ConfirmationPage({
             <span className="font-semibold">{EVENT.dateLabel}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-rz-cream/60">⏰ Your show</span>
+            <span className="text-rz-cream/60">⏰ Time</span>
             <span className="font-semibold text-right">
-              {showTimeFull(booking.show_time)}
+              {showTimeLabel(booking.show_time)}
             </span>
           </div>
           <div className="flex justify-between">
@@ -92,10 +92,6 @@ export default async function ConfirmationPage({
           <div className="flex justify-between">
             <span className="text-rz-cream/60">💰 Amount</span>
             <span className="font-semibold">{formatPkr(booking.amount)}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-rz-cream/60">☕ Coffee</span>
-            <span className="font-semibold">Reserved</span>
           </div>
           {daysLeft > 0 && (
             <div className="flex justify-between">
@@ -112,10 +108,10 @@ export default async function ConfirmationPage({
           {booking.group_type === "couple" && <li>❤️ Your Partner</li>}
           {booking.group_type === "duo" && <li>👬 Your Buddy</li>}
           <li>🎉 Good Vibes</li>
-          <li>😎 Your Selection</li>
+          <li>💎 Something you want bedazzled</li>
         </ul>
         <p className="mt-4 text-xs text-rz-cream/50">
-          📍 {EVENT.locationLabel} — exact directions shared before the show.
+          {`📍 ${EVENT.locationLabel} — exact directions shared before the workshop.`}
         </p>
       </GlassCard>
 

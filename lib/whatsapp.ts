@@ -1,4 +1,4 @@
-import { EVENT, showTimeFull } from "./constants";
+import { EVENT, showTimeLabel } from "./constants";
 import type { Booking } from "./types";
 
 function toWaNumber(raw: string) {
@@ -14,24 +14,23 @@ export function buildWaLink(phone: string, message: string) {
 export function customerToBusinessLink(
   booking: Pick<Booking, "booking_ref" | "primary_name" | "ticket_type" | "show_time">
 ) {
-  const message = `Hi ${EVENT.brand}! 👋 I just booked my spot for ${EVENT.name}.\n\nName: ${booking.primary_name}\nBooking Ref: ${booking.booking_ref}\nShow: ${showTimeFull(booking.show_time)}\nTicket: ${booking.ticket_type}\n\nHere's my payment screenshot for confirmation!`;
+  const message = `Hi ${EVENT.brand}! 👋 I just booked my spot for ${EVENT.name}.\n\nName: ${booking.primary_name}\nBooking Ref: ${booking.booking_ref}\nSession: ${showTimeLabel(booking.show_time)}\nTicket: ${booking.ticket_type}\n\nHere's my payment screenshot for confirmation!`;
   return buildWaLink(EVENT.whatsappBusinessNumber, message);
 }
 
 export function confirmationTemplate(booking: Booking) {
-  return `🎨 Welcome to ${EVENT.name} — ${EVENT.tagline}!
+  return `💎 Welcome to ${EVENT.name} — ${EVENT.tagline}!
 
 Your booking has been confirmed.
 📅 Date: ${EVENT.dateLabel}
-⏰ Your show: ${showTimeFull(booking.show_time)}
+⏰ Time: ${showTimeLabel(booking.show_time)}
 📍 Venue: ${EVENT.locationLabel}
 🎟 Ticket Type: ${booking.ticket_type}
-☕ Your free coffee is reserved!
 
 Bring:
 ❤️ Your Partner (if applicable)
 🎉 Good Vibes
-😎 Your Selection
+💎 Something you want bedazzled
 
 See you there! 💜
 
@@ -46,6 +45,6 @@ export function adminToCustomerLink(booking: Booking) {
 export function businessChatLink(prefill?: string) {
   return buildWaLink(
     EVENT.whatsappBusinessNumber,
-    prefill || `Hi ${EVENT.brand}! I have a question about ${EVENT.name} 🎨`
+    prefill || `Hi ${EVENT.brand}! I have a question about ${EVENT.name} 💎`
   );
 }

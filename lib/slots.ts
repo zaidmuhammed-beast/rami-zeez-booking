@@ -7,7 +7,6 @@ export type ShowAvailability = {
   id: ShowTimeId;
   label: string;
   emoji: string;
-  film: string;
   note: string;
   capacity: number;
   taken: number;
@@ -36,7 +35,7 @@ export async function getSlotAvailability() {
   return { taken, total };
 }
 
-/** Seats taken per show — each one has its own capacity. */
+/** Seats taken per session — each one has its own capacity. */
 export async function getShowAvailability(): Promise<ShowAvailability[]> {
   const rows = await fetchBookedRows();
 
@@ -50,7 +49,6 @@ export async function getShowAvailability(): Promise<ShowAvailability[]> {
       id: show.id,
       label: show.label,
       emoji: show.emoji,
-      film: show.film,
       note: show.note,
       capacity: show.capacity,
       taken,
@@ -60,18 +58,18 @@ export async function getShowAvailability(): Promise<ShowAvailability[]> {
   });
 }
 
-/** Server-side guard: can this show still take that many seats? */
+/** Server-side guard: can this session still take that many seats? */
 export async function canSeat(showTime: string, seats: number) {
   const shows = await getShowAvailability();
   const show = shows.find((s) => s.id === showTime);
-  if (!show) return { ok: false as const, reason: "Unknown show time." };
+  if (!show) return { ok: false as const, reason: "Unknown session." };
   if (show.remaining < seats) {
     return {
       ok: false as const,
       reason:
         show.remaining === 0
-          ? `${show.film} at ${show.label} is sold out. Please pick the other show.`
-          : `Only ${show.remaining} seat${show.remaining === 1 ? "" : "s"} left for ${show.film} at ${show.label}.`,
+          ? "This session is sold out — message us and we'll tell you if a seat frees up."
+          : `Only ${show.remaining} seat${show.remaining === 1 ? "" : "s"} left in the ${show.label} session.`,
     };
   }
   return { ok: true as const };

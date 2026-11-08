@@ -9,6 +9,8 @@ type TicketCardProps = {
   price: number;
   perks: string[];
   note?: string;
+  /** Chip in the top corner, e.g. "Best value" or "Early bird". */
+  tag?: string;
   highlight?: boolean;
   /** Full Tailwind gradient classes, e.g. "from-hue-pink to-hue-coral". */
   accent: string;
@@ -21,6 +23,7 @@ export function TicketCard({
   price,
   perks,
   note,
+  tag,
   highlight = false,
   accent,
 }: TicketCardProps) {
@@ -35,9 +38,15 @@ export function TicketCard({
         aria-hidden
         className={`absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${accent}`}
       />
-      {highlight && (
-        <span className="absolute top-5 right-5 chip border-hue-yellow/40 text-hue-yellow text-xs">
-          Best value
+      {tag && (
+        <span
+          className={`absolute top-5 right-5 chip text-xs ${
+            highlight
+              ? "border-hue-yellow/40 text-hue-yellow"
+              : "border-hue-mint/40 text-hue-mint"
+          }`}
+        >
+          {tag}
         </span>
       )}
 
